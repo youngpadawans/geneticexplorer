@@ -4,7 +4,7 @@ import random
 import operator
 
 base_pop = 100
-poss_ingredients = ["spaghetti"]
+poss_ingredients = ["spaghetti", "pesto", "mousalini"]
 
 class pasta:
     #format and functions of the pasta chromosome
@@ -27,9 +27,9 @@ class pasta:
         #gives a list of the genes
         return [self.gene_1, self.gene_2, self.gene_3, self.gene_4]
 
-    def set_fitvalue(self, fit_val):
+    def set_fitvalue(self):
         #use to set fitvalue
-        self.fitvalue = fit_val
+        self.fitvalue = 100
 
     def get_fitvalue(self):
         #gives the set fitvalue
@@ -39,6 +39,7 @@ class Chrom_Population:
 
     __chrom_list = []
     __chrom_fitdict = {}
+    __prob_dict = {}
 
     def __init__(self, chrom_list):
         Chrom_Population.chrom_dict = chrom_list
@@ -47,18 +48,46 @@ class Chrom_Population:
         #remove 10% of self and move to next generation
         pass
 
-    def parent_select(self):
-        #selects parent pairs
-
+    def probability_parent(self):
+        #creates a dictionary containing the probability of being selected as a parent
+        self.__prob_dict = {}
+        total = 0
+        prev_chance = 0
+        fit_copy1 = self.__chrom_fitdict
+        fit_copy2 = self.__chrom_fitdict
+        for chrom in fit_copy1:
+            total += fit_copy1[chrom]
+        for chrom in fit_copy2:
+            selection_chance = (fit_copy2[chrom]/total) + prev_chance
+            self.__prob_dict[chrom] = selection_chance
+            prev_chance = selection_chance
         pass
+
+    def parent_select(self):
+        #selects parents based on probability dict
+        parent_1 = random.random()
+        parent_2 = random.random()
+        prob_dic1 = self.__prob_dict
+        prob_dic2 = self.__prob_dict
+        for chrom in prob_dic1:
+            if prob_dic1[chrom] <= parent_1:
+                parent_1 = chrom
+                break
+        for chrom in prob_dic2:
+            if prob_dic2[chrom] <= parent_2:
+                parent_2 = chrom
+                break
+        parent_tuple = (parent_1, parent_2)
+        return parent_tuple
 
     def dict_producer(self):
         for chrom in self.__chrom_list:
             self.chrom_fidict[chrom] = chrom.get_fitvalue()
         pass
 
-    def breed_et_mutate(self):
+    def breed_et_mutate(self, couple_tuple):
         #mutates children after bred from two chromosomes
+
         pass
 
     def reset_population(self):
