@@ -3,7 +3,8 @@ __author__ = 'theep_000'
 import random
 import operator
 
-base_pop = 100
+mutate_chance = 2
+base_pop = 10
 poss_ingredients = ["spaghetti", "pesto", "mousalini"]
 
 class pasta:
@@ -56,7 +57,7 @@ class Chrom_Population:
         fit_copy1 = self.__chrom_fitdict
         fit_copy2 = self.__chrom_fitdict
         for chrom in fit_copy1:
-            total += fit_copy1[chrom]
+            total += self.__chrom_fitdict[chrom]
         for chrom in fit_copy2:
             selection_chance = (fit_copy2[chrom]/total) + prev_chance
             self.__prob_dict[chrom] = selection_chance
@@ -82,13 +83,39 @@ class Chrom_Population:
 
     def dict_producer(self):
         for chrom in self.__chrom_list:
-            self.chrom_fidict[chrom] = chrom.get_fitvalue()
+            chrom.set_fitvalue()
+            self.__chrom_fitdict[chrom] = chrom.get_fitvalue()
         pass
 
     def breed_et_mutate(self, couple_tuple):
         #mutates children after bred from two chromosomes
-
-        pass
+        pasta1 = couple_tuple[0]
+        pasta2 = couple_tuple[1]
+        ingredients_1 = pasta1.list_ing()
+        ingredients_2 = pasta2.list_ing()
+        ingredients_3 = []
+        mutated_child = []
+        for num in range(0,4):
+            random_layout = random.randint(0,6)
+            if random_layout == 1:
+                ingredients_3 = [ingredients_1[0],ingredients_1[1], ingredients_2[2], ingredients_2[3]]
+            if random_layout == 2:
+                ingredients_3 = [ingredients_1[0],ingredients_2[1], ingredients_1[2], ingredients_2[3]]
+            if random_layout == 3:
+                ingredients_3 = [ingredients_1[0],ingredients_2[1], ingredients_2[2], ingredients_1[3]]
+            if random_layout == 4:
+                ingredients_3 = [ingredients_2[0],ingredients_2[1], ingredients_1[2], ingredients_1[3]]
+            if random_layout == 5:
+                ingredients_3 = [ingredients_2[0],ingredients_1[1], ingredients_1[2], ingredients_2[3]]
+            if random_layout == 6:
+                ingredients_3 = [ingredients_2[0],ingredients_1[1], ingredients_2[2], ingredients_1[3]]
+        for ing in ingredients_3:
+            mutate_poss = random.randint(0,100)
+            if mutate_poss < mutate_chance:
+                ing = poss_ingredients[random.randint(0, len(poss_ingredients)-1)]
+            mutated_child.append(ing)
+        child = pasta(mutated_child[0], mutated_child[1], mutated_child[2], mutated_child[3])
+        self.__chrom_list.append(child)
 
     def reset_population(self):
         #replaces current dict with new generated genes/use to create initial population
@@ -113,9 +140,12 @@ class Chrom_Population:
         return max(self.chrom_dict.iteritems(), key=operator.itemgetter(1))[0]
 
 hella = pasta("h", "e", "l", "l")
-hella.set_fitvalue(100)
+hella.set_fitvalue()
 print hella.list_ing()
 print hella.get_fitvalue()
 generation = Chrom_Population([])
 generation.reset_population()
 print generation.get_generation()
+generation.dict_producer()
+generation.probability_parent()
+generation.parent_select()
