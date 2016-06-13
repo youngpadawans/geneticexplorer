@@ -2,9 +2,13 @@ __author__ = 'theep_000'
 
 import random
 import operator
+import sys
+import argparse
 
 mutate_chance = 2
-base_pop = 10
+base_pop = 100
+generation_max = 100
+
 poss_ingredients = ["spaghetti", "pesto", "mousalini"]
 
 class pasta:
@@ -43,7 +47,7 @@ class Chrom_Population:
     __prob_dict = {}
 
     def __init__(self, chrom_list):
-        Chrom_Population.chrom_dict = chrom_list
+        Chrom_Population.__chrom_list = chrom_list
 
     def cull(self):
         #remove 10% of self and move to next generation
@@ -59,24 +63,33 @@ class Chrom_Population:
         for chrom in fit_copy1:
             total += self.__chrom_fitdict[chrom]
         for chrom in fit_copy2:
-            selection_chance = (fit_copy2[chrom]/total) + prev_chance
+            selection_chance = float(fit_copy2[chrom])/float(total) + prev_chance
             self.__prob_dict[chrom] = selection_chance
             prev_chance = selection_chance
         pass
 
     def parent_select(self):
         #selects parents based on probability dict
-        parent_1 = random.random()
-        parent_2 = random.random()
+        parentchance_1 = random.random()
+        parentchance_2 = random.random()
         prob_dic1 = self.__prob_dict
         prob_dic2 = self.__prob_dict
+        def_check = 0
         for chrom in prob_dic1:
-            if prob_dic1[chrom] <= parent_1:
+            if prob_dic1[chrom] >= parentchance_1:
                 parent_1 = chrom
+                def_check = 1
+            if def_check == 1:
                 break
+        def_check = 0
         for chrom in prob_dic2:
-            if prob_dic2[chrom] <= parent_2:
+            if prob_dic2[chrom] >= parentchance_2:
                 parent_2 = chrom
+                if parent_2 == parent_1:
+
+                    parent_2 = next(chrom)
+                def_check = 1
+            if def_check == 1:
                 break
         parent_tuple = (parent_1, parent_2)
         return parent_tuple
@@ -139,6 +152,19 @@ class Chrom_Population:
         #returns fitteset chromosome
         return max(self.chrom_dict.iteritems(), key=operator.itemgetter(1))[0]
 
+def main():
+    #parse line arguments
+    first_gen = Chrom_Population([])
+    first_gen.reset_population()
+    for gens in generation_max:
+
+        pass
+
+
+
+if __name__ == "__main__":
+    main()
+
 hella = pasta("h", "e", "l", "l")
 hella.set_fitvalue()
 print hella.list_ing()
@@ -148,4 +174,4 @@ generation.reset_population()
 print generation.get_generation()
 generation.dict_producer()
 generation.probability_parent()
-generation.parent_select()
+print generation.parent_select()
