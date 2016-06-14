@@ -2,9 +2,15 @@ __author__ = 'theep_000'
 
 import random
 import operator
+from collections import Counter
+import sys
+import argparse
 
+mutate_chance = 90
 base_pop = 100
-poss_ingredients = ["spaghetti", "pesto", "mousalini"]
+generation_max = 100
+
+poss_ingredients = ["tomato sauce","pesto","mozzarella","alfredo sauce", "pasta shells","chile sauce", "pasta bowties", "parmesan","meatballs","pasta tubes","shredded chicken","basil", "spinach","chives","shrimp","mushroom","macaroni","feta cheese","noodles","sausage","olives"]
 
 class pasta:
     #format and functions of the pasta chromosome
@@ -18,18 +24,187 @@ class pasta:
     def __init__ (self, gene_1, gene_2, gene_3, gene_4):
         #creates object from 4 genes
 
-        pasta.gene_1 = gene_1
-        pasta.gene_2 = gene_2
-        pasta.gene_3 = gene_3
-        pasta.gene_4 = gene_4
+        self.__gene_1 = gene_1
+        self.__gene_2 = gene_2
+        self.__gene_3 = gene_3
+        self.__gene_4 = gene_4
 
     def list_ing(self):
         #gives a list of the genes
-        return [self.gene_1, self.gene_2, self.gene_3, self.gene_4]
+        return [self.__gene_1, self.__gene_2, self.__gene_3, self.__gene_4]
 
     def set_fitvalue(self):
-        #use to set fitvalue
-        self.fitvalue = 100
+        # Use to set fit value for each ingredient.
+        fit_val = 0
+        if self.__gene_1 == "tomato_sauce":
+            fit_val += 7
+        if self.__gene_2 == "tomato_sauce":
+            fit_val += 7
+        if self.__gene_3 == "tomato_sauce":
+            fit_val += 7
+        if self.__gene_4 == "tomato_sauce":
+            fit_val += 7
+        if self.__gene_1 == "pesto":
+            fit_val += 5
+        if self.__gene_2 == "pesto":
+            fit_val += 5
+        if self.__gene_3 == "pesto":
+            fit_val += 5
+        if self.__gene_4 == "pesto":
+            fit_val += 5
+        if self.__gene_1 == "mozzarella":
+            fit_val += 5
+        if self.__gene_2 == "mozzarella":
+            fit_val += 5
+        if self.__gene_3 == "mozzarella":
+            fit_val += 5
+        if self.__gene_4 == "mozzarella":
+            fit_val += 5
+        if self.__gene_1 == "alfredo sauce":
+            fit_val += 10
+        if self.__gene_2 == "alfredo sauce":
+            fit_val += 10
+        if self.__gene_3 == "alfredo sauce":
+            fit_val += 10
+        if self.__gene_4 == "alfredo sauce":
+            fit_val += 10
+        if self.__gene_1 == "pasta shells":
+            fit_val += 7
+        if self.__gene_2 == "pasta shells":
+            fit_val += 7
+        if self.__gene_3 == "pasta shells":
+            fit_val += 7
+        if self.__gene_4 == "pasta shells":
+            fit_val += 7
+        if self.__gene_1 == "chile sauce":
+            fit_val += 5
+        if self.__gene_2 == "chile sauce":
+            fit_val += 5
+        if self.__gene_3 == "chile sauce":
+            fit_val += 5
+        if self.__gene_4 == "chile sauce":
+            fit_val += 5
+        if self.__gene_1 == "pasta bowties":
+            fit_val += 5
+        if self.__gene_2 == "pasta bowties":
+            fit_val += 5
+        if self.__gene_3 == "pasta bowties":
+            fit_val += 5
+        if self.__gene_4 == "pasta bowties":
+            fit_val += 5
+        if self.__gene_1 == "parmesan":
+            fit_val += 10
+        if self.__gene_2 == "parmesan":
+            fit_val += 10
+        if self.__gene_3 == "parmesan":
+            fit_val += 10
+        if self.__gene_4 == "parmesan":
+            fit_val += 10
+        if self.__gene_1 == "meatballs":
+            fit_val += 8
+        if self.__gene_2 == "meatballs":
+            fit_val += 8
+        if self.__gene_3 == "meatballs":
+            fit_val += 8
+        if self.__gene_4 == "meatballs":
+            fit_val += 8
+        if self.__gene_1 == "pasta tubes":
+            fit_val += 10
+        if self.__gene_2 == "pasta tubes":
+            fit_val += 10
+        if self.__gene_3 == "pasta tubes":
+            fit_val += 10
+        if self.__gene_4 == "pasta tubes":
+            fit_val += 10
+        if self.__gene_1 == "shredded chicken":
+            fit_val += 10
+        if self.__gene_2 == "shredded chicken":
+            fit_val += 10
+        if self.__gene_3 == "shredded chicken":
+            fit_val += 10
+        if self.__gene_4 == "shredded chicken":
+            fit_val += 10
+        if self.__gene_1 == "basil":
+            fit_val += 7
+        if self.__gene_2 == "basil":
+            fit_val += 7
+        if self.__gene_3 == "basil":
+            fit_val += 7
+        if self.__gene_4 == "basil":
+            fit_val += 7
+        if self.__gene_1 == "spinach":
+            fit_val += 10
+        if self.__gene_2 == "spinach":
+            fit_val += 10
+        if self.__gene_3 == "spinach":
+            fit_val += 10
+        if self.__gene_4 == "spinach":
+            fit_val += 10
+        if self.__gene_1 == "chives":
+            fit_val += 2
+        if self.__gene_2 == "chives":
+            fit_val += 2
+        if self.__gene_3 == "chives":
+            fit_val += 2
+        if self.__gene_4 == "chives":
+            fit_val += 2
+        if self.__gene_1 == "shrimp":
+            fit_val += 2
+        if self.__gene_2 == "shrimp":
+            fit_val += 2
+        if self.__gene_3 == "shrimp":
+            fit_val += 2
+        if self.__gene_4 == "shrimp":
+            fit_val += 2
+        if self.__gene_1 == "mushroom":
+            fit_val += 2
+        if self.__gene_2 == "mushroom":
+            fit_val += 2
+        if self.__gene_3 == "mushroom":
+            fit_val += 2
+        if self.__gene_4 == "mushroom":
+            fit_val += 2
+        if self.__gene_1 == "macaroni":
+            fit_val += 5
+        if self.__gene_2 == "macaroni":
+            fit_val += 5
+        if self.__gene_3 == "macaroni":
+            fit_val += 5
+        if self.__gene_4 == "macaroni":
+            fit_val += 5
+        if self.__gene_1 == "feta cheese":
+            fit_val += 2
+        if self.__gene_2 == "feta cheese":
+            fit_val += 2
+        if self.__gene_3 == "feta cheese":
+            fit_val += 2
+        if self.__gene_4 == "feta cheese":
+            fit_val += 2
+        if self.__gene_1 == "olives":
+            fit_val += 0
+        if self.__gene_2 == "olives":
+            fit_val += 0
+        if self.__gene_3 == "olives":
+            fit_val += 0
+        if self.__gene_4 == "olives":
+            fit_val += 0
+        if self.__gene_1 == "noodles":
+            fit_val += 7
+        if self.__gene_2 == "noodles":
+            fit_val += 7
+        if self.__gene_3 == "noodles":
+            fit_val += 7
+        if self.__gene_4 == "noodles":
+            fit_val += 7
+        if self.__gene_1 == "sausage":
+            fit_val += 7
+        if self.__gene_2 == "sausage":
+            fit_val += 7
+        if self.__gene_3 == "sausage":
+            fit_val += 7
+        if self.__gene_4 == "sausage":
+            fit_val += 7
+        self.fitvalue = fit_val
 
     def get_fitvalue(self):
         #gives the set fitvalue
@@ -42,10 +217,14 @@ class Chrom_Population:
     __prob_dict = {}
 
     def __init__(self, chrom_list):
-        Chrom_Population.chrom_dict = chrom_list
+        Chrom_Population.__chrom_list = chrom_list
 
     def cull(self):
-        #remove 10% of self and move to next generation
+        #remove 10% of self
+        count_rem = (len(self.__chrom_list)/10)
+        execution =reversed(Counter(self.__chrom_fitdict).most_common()[-count_rem:])
+        for object in execution:
+            del self.__chrom_fitdict[object[0]]
         pass
 
     def probability_parent(self):
@@ -56,43 +235,83 @@ class Chrom_Population:
         fit_copy1 = self.__chrom_fitdict
         fit_copy2 = self.__chrom_fitdict
         for chrom in fit_copy1:
-            total += fit_copy1[chrom]
+            total += self.__chrom_fitdict[chrom]
         for chrom in fit_copy2:
-            selection_chance = (fit_copy2[chrom]/total) + prev_chance
+            selection_chance = float(fit_copy2[chrom])/float(total) + prev_chance
             self.__prob_dict[chrom] = selection_chance
             prev_chance = selection_chance
         pass
 
     def parent_select(self):
         #selects parents based on probability dict
-        parent_1 = random.random()
-        parent_2 = random.random()
+        parentchance_1 = random.random()
+        parentchance_2 = random.random()
         prob_dic1 = self.__prob_dict
         prob_dic2 = self.__prob_dict
+        def_check = 0
         for chrom in prob_dic1:
-            if prob_dic1[chrom] <= parent_1:
+            if prob_dic1[chrom] >= parentchance_1:
                 parent_1 = chrom
+                def_check = 1
+            if def_check == 1:
                 break
+        def_check = 0
+        prev_parent = None
         for chrom in prob_dic2:
-            if prob_dic2[chrom] <= parent_2:
+            if prob_dic2[chrom] >= parentchance_2:
                 parent_2 = chrom
+                #if parent_2 == parent_1:
+                    #if prev_parent != None:
+                        #parent_2 = prev_parent
+                    #if prev_parent == None:
+                        #parent_2 = next(chrom)
+                def_check = 1
+            if def_check == 1:
                 break
+            prev_parent = chrom
         parent_tuple = (parent_1, parent_2)
         return parent_tuple
 
     def dict_producer(self):
         for chrom in self.__chrom_list:
-            self.chrom_fidict[chrom] = chrom.get_fitvalue()
+            chrom.set_fitvalue()
+            self.__chrom_fitdict[chrom] = chrom.get_fitvalue()
         pass
 
     def breed_et_mutate(self, couple_tuple):
         #mutates children after bred from two chromosomes
-
-        pass
+        pasta1 = couple_tuple[0]
+        pasta2 = couple_tuple[1]
+        ingredients_1 = pasta1.list_ing()
+        ingredients_2 = pasta2.list_ing()
+        ingredients_3 = []
+        mutated_child = []
+        for num in range(0,1):
+            random_layout = random.randint(1, 6)
+            if random_layout == 1:
+                ingredients_3 = [ingredients_1[0],ingredients_1[1], ingredients_2[2], ingredients_2[3]]
+            if random_layout == 2:
+                ingredients_3 = [ingredients_1[0],ingredients_2[1], ingredients_1[2], ingredients_2[3]]
+            if random_layout == 3:
+                ingredients_3 = [ingredients_1[0],ingredients_2[1], ingredients_2[2], ingredients_1[3]]
+            if random_layout == 4:
+                ingredients_3 = [ingredients_2[0],ingredients_2[1], ingredients_1[2], ingredients_1[3]]
+            if random_layout == 5:
+                ingredients_3 = [ingredients_2[0],ingredients_1[1], ingredients_1[2], ingredients_2[3]]
+            if random_layout == 6:
+                ingredients_3 = [ingredients_2[0],ingredients_1[1], ingredients_2[2], ingredients_1[3]]
+        for ing in ingredients_3:
+            mutate_poss = random.randint(0,100)
+            if mutate_poss < mutate_chance:
+                ing = poss_ingredients[random.randint(0, len(poss_ingredients)-1)]
+            mutated_child.append(ing)
+        child = pasta(mutated_child[0], mutated_child[1], mutated_child[2], mutated_child[3])
+        self.__chrom_list.append(child)
 
     def reset_population(self):
         #replaces current dict with new generated genes/use to create initial population
         pasta_count = 0
+        prev_pasta = pasta("spaghetti", "a", "a", "a")
         for chrom in range(0, base_pop):
             pasta_count += 1
             pasta_name = pasta_count
@@ -110,12 +329,26 @@ class Chrom_Population:
 
     def give_most_fit(self):
         #returns fitteset chromosome
-        return max(self.chrom_dict.iteritems(), key=operator.itemgetter(1))[0]
+        return max(self.__chrom_fitdict.iteritems(), key=operator.itemgetter(1))[0]
 
-hella = pasta("h", "e", "l", "l")
-hella.set_fitvalue(100)
-print hella.list_ing()
-print hella.get_fitvalue()
-generation = Chrom_Population([])
-generation.reset_population()
-print generation.get_generation()
+def main():
+    #parse line arguments
+    population = []
+    for gens in range(0, generation_max):
+        gens = Chrom_Population(population)
+        if population == []:
+            gens.reset_population()
+        gens.dict_producer()
+        gens.probability_parent()
+        gens.cull()
+        for pairs in range(0, base_pop/2):
+            gens.breed_et_mutate(gens.parent_select())
+        population = gens.get_generation()
+        current_best = gens.give_most_fit()
+    print current_best.list_ing()
+    print current_best.get_fitvalue()
+
+
+
+if __name__ == "__main__":
+    main()
