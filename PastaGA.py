@@ -6,13 +6,23 @@ from collections import Counter
 import sys
 import argparse
 
-mutate_chance = 90
-base_pop = 100
-generation_max = 100
+mutate_chance = 2
+base_pop = 10
+generation_max = 10
 
 poss_ingredients = ["tomato sauce","pesto","mozzarella","alfredo sauce", "pasta shells","chile sauce", "pasta bowties", "parmesan","meatballs","pasta tubes","shredded chicken","basil", "spinach","chives","shrimp","mushroom","macaroni","feta cheese","noodles","sausage","olives"]
 
-class pasta:
+class Gene:
+
+    __ingredient = ""
+    score_dict = {"tomato sauce" : 7,"pesto" : 5,"mozzarella" : 5,"alfredo sauce" : 10, "pasta shells" : 7,"chile sauce" : 5, "pasta bowties" : 5, "parmesan" : 10,"meatballs" : 8,"pasta tubes" : 10,"shredded chicken" : 10,"basil" : 7, "spinach" : 10,"chives" : 2,"shrimp" : 2,"mushroom" : 2,"macaroni" : 5,"feta cheese" : 2,"noodles" : 7,"sausage" : 7,"olives": 0}
+
+    def __init__(self, ingredient):
+
+        self.__ingredient = ingredient
+
+
+class PastaDish:
     #format and functions of the pasta chromosome
 
     __gene_1 = ""
@@ -34,6 +44,14 @@ class pasta:
         return [self.__gene_1, self.__gene_2, self.__gene_3, self.__gene_4]
 
     def set_fitvalue(self):
+        fit_val = 0
+        fit_val += Gene.score_dict[self.__gene_1]
+        fit_val += Gene.score_dict[self.__gene_2]
+        fit_val += Gene.score_dict[self.__gene_3]
+        fit_val += Gene.score_dict[self.__gene_4]
+        self.fitvalue = fit_val
+
+    def old_set_fitvalue(self):
         # Use to set fit value for each ingredient.
         fit_val = 0
         if self.__gene_1 == "tomato_sauce":
@@ -210,14 +228,14 @@ class pasta:
         #gives the set fitvalue
         return self.fitvalue
 
-class Chrom_Population:
+class ChromPopulation:
 
     __chrom_list = []
     __chrom_fitdict = {}
     __prob_dict = {}
 
     def __init__(self, chrom_list):
-        Chrom_Population.__chrom_list = chrom_list
+        self.__chrom_list = chrom_list
 
     def cull(self):
         #remove 10% of self
@@ -260,11 +278,6 @@ class Chrom_Population:
         for chrom in prob_dic2:
             if prob_dic2[chrom] >= parentchance_2:
                 parent_2 = chrom
-                #if parent_2 == parent_1:
-                    #if prev_parent != None:
-                        #parent_2 = prev_parent
-                    #if prev_parent == None:
-                        #parent_2 = next(chrom)
                 def_check = 1
             if def_check == 1:
                 break
@@ -305,13 +318,12 @@ class Chrom_Population:
             if mutate_poss < mutate_chance:
                 ing = poss_ingredients[random.randint(0, len(poss_ingredients)-1)]
             mutated_child.append(ing)
-        child = pasta(mutated_child[0], mutated_child[1], mutated_child[2], mutated_child[3])
+        child = PastaDish(mutated_child[0], mutated_child[1], mutated_child[2], mutated_child[3])
         self.__chrom_list.append(child)
 
     def reset_population(self):
         #replaces current dict with new generated genes/use to create initial population
         pasta_count = 0
-        prev_pasta = pasta("spaghetti", "a", "a", "a")
         for chrom in range(0, base_pop):
             pasta_count += 1
             pasta_name = pasta_count
@@ -319,7 +331,7 @@ class Chrom_Population:
             ingredient_2 = poss_ingredients[random.randint(0, len(poss_ingredients)-1)]
             ingredient_3 = poss_ingredients[random.randint(0, len(poss_ingredients)-1)]
             ingredient_4 = poss_ingredients[random.randint(0, len(poss_ingredients)-1)]
-            pasta_name = pasta(ingredient_1, ingredient_2, ingredient_3, ingredient_4)
+            pasta_name = PastaDish(ingredient_1, ingredient_2, ingredient_3, ingredient_4)
             self.__chrom_list.append(pasta_name)
         pass
 
@@ -335,7 +347,7 @@ def main():
     #parse line arguments
     population = []
     for gens in range(0, generation_max):
-        gens = Chrom_Population(population)
+        gens = ChromPopulation(population)
         if population == []:
             gens.reset_population()
         gens.dict_producer()
