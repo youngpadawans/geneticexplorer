@@ -4,7 +4,8 @@ import random
 import operator
 from collections import Counter
 import sys
-import argparse
+from sys import argv
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
 mutate_chance = 2
 base_pop = 10
@@ -49,179 +50,6 @@ class PastaDish:
         fit_val += Gene.score_dict[self.__gene_2]
         fit_val += Gene.score_dict[self.__gene_3]
         fit_val += Gene.score_dict[self.__gene_4]
-        self.fitvalue = fit_val
-
-    def old_set_fitvalue(self):
-        # Use to set fit value for each ingredient.
-        fit_val = 0
-        if self.__gene_1 == "tomato_sauce":
-            fit_val += 7
-        if self.__gene_2 == "tomato_sauce":
-            fit_val += 7
-        if self.__gene_3 == "tomato_sauce":
-            fit_val += 7
-        if self.__gene_4 == "tomato_sauce":
-            fit_val += 7
-        if self.__gene_1 == "pesto":
-            fit_val += 5
-        if self.__gene_2 == "pesto":
-            fit_val += 5
-        if self.__gene_3 == "pesto":
-            fit_val += 5
-        if self.__gene_4 == "pesto":
-            fit_val += 5
-        if self.__gene_1 == "mozzarella":
-            fit_val += 5
-        if self.__gene_2 == "mozzarella":
-            fit_val += 5
-        if self.__gene_3 == "mozzarella":
-            fit_val += 5
-        if self.__gene_4 == "mozzarella":
-            fit_val += 5
-        if self.__gene_1 == "alfredo sauce":
-            fit_val += 10
-        if self.__gene_2 == "alfredo sauce":
-            fit_val += 10
-        if self.__gene_3 == "alfredo sauce":
-            fit_val += 10
-        if self.__gene_4 == "alfredo sauce":
-            fit_val += 10
-        if self.__gene_1 == "pasta shells":
-            fit_val += 7
-        if self.__gene_2 == "pasta shells":
-            fit_val += 7
-        if self.__gene_3 == "pasta shells":
-            fit_val += 7
-        if self.__gene_4 == "pasta shells":
-            fit_val += 7
-        if self.__gene_1 == "chile sauce":
-            fit_val += 5
-        if self.__gene_2 == "chile sauce":
-            fit_val += 5
-        if self.__gene_3 == "chile sauce":
-            fit_val += 5
-        if self.__gene_4 == "chile sauce":
-            fit_val += 5
-        if self.__gene_1 == "pasta bowties":
-            fit_val += 5
-        if self.__gene_2 == "pasta bowties":
-            fit_val += 5
-        if self.__gene_3 == "pasta bowties":
-            fit_val += 5
-        if self.__gene_4 == "pasta bowties":
-            fit_val += 5
-        if self.__gene_1 == "parmesan":
-            fit_val += 10
-        if self.__gene_2 == "parmesan":
-            fit_val += 10
-        if self.__gene_3 == "parmesan":
-            fit_val += 10
-        if self.__gene_4 == "parmesan":
-            fit_val += 10
-        if self.__gene_1 == "meatballs":
-            fit_val += 8
-        if self.__gene_2 == "meatballs":
-            fit_val += 8
-        if self.__gene_3 == "meatballs":
-            fit_val += 8
-        if self.__gene_4 == "meatballs":
-            fit_val += 8
-        if self.__gene_1 == "pasta tubes":
-            fit_val += 10
-        if self.__gene_2 == "pasta tubes":
-            fit_val += 10
-        if self.__gene_3 == "pasta tubes":
-            fit_val += 10
-        if self.__gene_4 == "pasta tubes":
-            fit_val += 10
-        if self.__gene_1 == "shredded chicken":
-            fit_val += 10
-        if self.__gene_2 == "shredded chicken":
-            fit_val += 10
-        if self.__gene_3 == "shredded chicken":
-            fit_val += 10
-        if self.__gene_4 == "shredded chicken":
-            fit_val += 10
-        if self.__gene_1 == "basil":
-            fit_val += 7
-        if self.__gene_2 == "basil":
-            fit_val += 7
-        if self.__gene_3 == "basil":
-            fit_val += 7
-        if self.__gene_4 == "basil":
-            fit_val += 7
-        if self.__gene_1 == "spinach":
-            fit_val += 10
-        if self.__gene_2 == "spinach":
-            fit_val += 10
-        if self.__gene_3 == "spinach":
-            fit_val += 10
-        if self.__gene_4 == "spinach":
-            fit_val += 10
-        if self.__gene_1 == "chives":
-            fit_val += 2
-        if self.__gene_2 == "chives":
-            fit_val += 2
-        if self.__gene_3 == "chives":
-            fit_val += 2
-        if self.__gene_4 == "chives":
-            fit_val += 2
-        if self.__gene_1 == "shrimp":
-            fit_val += 2
-        if self.__gene_2 == "shrimp":
-            fit_val += 2
-        if self.__gene_3 == "shrimp":
-            fit_val += 2
-        if self.__gene_4 == "shrimp":
-            fit_val += 2
-        if self.__gene_1 == "mushroom":
-            fit_val += 2
-        if self.__gene_2 == "mushroom":
-            fit_val += 2
-        if self.__gene_3 == "mushroom":
-            fit_val += 2
-        if self.__gene_4 == "mushroom":
-            fit_val += 2
-        if self.__gene_1 == "macaroni":
-            fit_val += 5
-        if self.__gene_2 == "macaroni":
-            fit_val += 5
-        if self.__gene_3 == "macaroni":
-            fit_val += 5
-        if self.__gene_4 == "macaroni":
-            fit_val += 5
-        if self.__gene_1 == "feta cheese":
-            fit_val += 2
-        if self.__gene_2 == "feta cheese":
-            fit_val += 2
-        if self.__gene_3 == "feta cheese":
-            fit_val += 2
-        if self.__gene_4 == "feta cheese":
-            fit_val += 2
-        if self.__gene_1 == "olives":
-            fit_val += 0
-        if self.__gene_2 == "olives":
-            fit_val += 0
-        if self.__gene_3 == "olives":
-            fit_val += 0
-        if self.__gene_4 == "olives":
-            fit_val += 0
-        if self.__gene_1 == "noodles":
-            fit_val += 7
-        if self.__gene_2 == "noodles":
-            fit_val += 7
-        if self.__gene_3 == "noodles":
-            fit_val += 7
-        if self.__gene_4 == "noodles":
-            fit_val += 7
-        if self.__gene_1 == "sausage":
-            fit_val += 7
-        if self.__gene_2 == "sausage":
-            fit_val += 7
-        if self.__gene_3 == "sausage":
-            fit_val += 7
-        if self.__gene_4 == "sausage":
-            fit_val += 7
         self.fitvalue = fit_val
 
     def get_fitvalue(self):
@@ -343,7 +171,28 @@ class ChromPopulation:
         #returns fitteset chromosome
         return max(self.__chrom_fitdict.iteritems(), key=operator.itemgetter(1))[0]
 
-def main():
+def command_line(arg_list=argv):
+
+    options_parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
+
+    options_parser.add_argument('--mutate_chance', help = 'percentage chance of every gene to mutate')
+    options_parser.add_argument('--base_population', help = 'amount of chromosomes the GA generates to as a base population')
+    options_parser.add_argument('--maximum_generation', help = 'amount of times the GA goes through its cycle')
+
+    opts, unkown = options_parser.parse_known_args(args = arg_list)
+
+    return opts
+
+def main(args, args_parsed = None):
+    if args_parsed is not None:
+        opts = args_parsed
+
+    else:
+        opts = command_line(args)
+
+    workflow()
+
+def workflow():
     #parse line arguments
     population = []
     for gens in range(0, generation_max):
