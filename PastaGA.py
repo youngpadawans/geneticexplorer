@@ -73,40 +73,40 @@ class PastaDish:
 class ChromPopulation:
     """format and fuctions of a population of chromosomes
     """
-    __chrom_list = []
-    __chrom_fitdict = {}
-    __prob_dict = {}
+    __chroms = []
+    __chrom_fit = {}
+    __probabilities = {}
 
     def __init__(self, chrom_list):
         """the given list defines the chomosome population
         """
 
-        self.__chrom_list = chrom_list
+        self.__chroms = chrom_list
 
     def cull(self):
         """remove 10% of self
         """
 
-        count_rem = (len(self.__chrom_list)/10)
-        execution =reversed(Counter(self.__chrom_fitdict).most_common()[-count_rem:])
+        count_rem = (len(self.__chroms)/10)
+        execution = reversed(Counter(self.__chrom_fit).most_common()[-count_rem:])
         for object in execution:
-            del self.__chrom_fitdict[object[0]]
+            del self.__chrom_fit[object[0]]
         pass
 
     def probabilityParent(self):
         """creates a dictionary containing the probability of being selected as a parent
         """
 
-        self.__prob_dict = {}
+        self.__probabilities = {}
         total = 0
         prev_chance = 0
-        fit_copy1 = self.__chrom_fitdict
-        fit_copy2 = self.__chrom_fitdict
+        fit_copy1 = self.__chrom_fit
+        fit_copy2 = self.__chrom_fit
         for chrom in fit_copy1:
-            total += self.__chrom_fitdict[chrom]
+            total += self.__chrom_fit[chrom]
         for chrom in fit_copy2:
             selection_chance = float(fit_copy2[chrom])/float(total) + prev_chance
-            self.__prob_dict[chrom] = selection_chance
+            self.__probabilities[chrom] = selection_chance
             prev_chance = selection_chance
         pass
 
@@ -115,8 +115,8 @@ class ChromPopulation:
         """
         parent_chance_1 = random.random()
         parent_chance_2 = random.random()
-        prob_dic1 = self.__prob_dict
-        prob_dic2 = self.__prob_dict
+        prob_dic1 = self.__probabilities
+        prob_dic2 = self.__probabilities
         def_check = 0
         for chrom in prob_dic1:
             if prob_dic1[chrom] >= parent_chance_1:
@@ -141,13 +141,13 @@ class ChromPopulation:
         parent_tuple = (parent_1, parent_2)
         return parent_tuple
 
-    def dictProducer(self):
+    def fitnessProducer(self):
         """creates a dictionary containing pasta types and their fitness value
         """
 
-        for chrom in self.__chrom_list:
+        for chrom in self.__chroms:
             chrom.setFitValue()
-            self.__chrom_fitdict[chrom] = chrom.fitvalue
+            self.__chrom_fit[chrom] = chrom.fitvalue
         pass
 
     def breedEtMutate(self, couple_tuple, mutate_chance):
@@ -162,24 +162,24 @@ class ChromPopulation:
         for num in range(0, 1):
             random_layout = random.randint(1, 6)
             if random_layout == 1:
-                ingredients_3 = [ingredients_1[0],ingredients_1[1], ingredients_2[2], ingredients_2[3]]
+                ingredients_3 = [ingredients_1[0], ingredients_1[1], ingredients_2[2], ingredients_2[3]]
             if random_layout == 2:
-                ingredients_3 = [ingredients_1[0],ingredients_2[1], ingredients_1[2], ingredients_2[3]]
+                ingredients_3 = [ingredients_1[0], ingredients_2[1], ingredients_1[2], ingredients_2[3]]
             if random_layout == 3:
-                ingredients_3 = [ingredients_1[0],ingredients_2[1], ingredients_2[2], ingredients_1[3]]
+                ingredients_3 = [ingredients_1[0], ingredients_2[1], ingredients_2[2], ingredients_1[3]]
             if random_layout == 4:
-                ingredients_3 = [ingredients_2[0],ingredients_2[1], ingredients_1[2], ingredients_1[3]]
+                ingredients_3 = [ingredients_2[0], ingredients_2[1], ingredients_1[2], ingredients_1[3]]
             if random_layout == 5:
-                ingredients_3 = [ingredients_2[0],ingredients_1[1], ingredients_1[2], ingredients_2[3]]
+                ingredients_3 = [ingredients_2[0], ingredients_1[1], ingredients_1[2], ingredients_2[3]]
             if random_layout == 6:
-                ingredients_3 = [ingredients_2[0],ingredients_1[1], ingredients_2[2], ingredients_1[3]]
+                ingredients_3 = [ingredients_2[0], ingredients_1[1], ingredients_2[2], ingredients_1[3]]
         for ing in ingredients_3:
-            mutate_poss = random.randint(0,100)
+            mutate_poss = random.randint(0, 100)
             if mutate_poss < mutate_chance:
                 ing = POSS_INGREDIENTS[random.randint(0, len(POSS_INGREDIENTS)-1)]
             mutated_child.append(ing)
         child = PastaDish(mutated_child[0], mutated_child[1], mutated_child[2], mutated_child[3])
-        self.__chrom_list.append(child)
+        self.__chroms.append(child)
 
     def resetPopulation(self, base_pop):
         """replaces current dict with new generated genes/use to create initial population
@@ -193,18 +193,18 @@ class ChromPopulation:
             ingredient_3 = POSS_INGREDIENTS[random.randint(0, len(POSS_INGREDIENTS)-1)]
             ingredient_4 = POSS_INGREDIENTS[random.randint(0, len(POSS_INGREDIENTS)-1)]
             pasta_name = PastaDish(ingredient_1, ingredient_2, ingredient_3, ingredient_4)
-            self.__chrom_list.append(pasta_name)
+            self.__chroms.append(pasta_name)
         pass
 
     def getGeneration(self):
         """returns the generation dict
         """
-        return self.__chrom_list
+        return self.__chroms
 
     def giveMostFit(self):
         """returns fitteset chromosome
         """
-        return max(self.__chrom_fitdict.iteritems(), key=operator.itemgetter(1))[0]
+        return max(self.__chrom_fit.iteritems(), key=operator.itemgetter(1))[0]
 
 def commandLine(arg_list=argv):
     """defines command line arguments
@@ -247,7 +247,7 @@ def workflow(generation_max, mutation_chance, base_pop):
         gens = ChromPopulation(population)
         if population == []:
             gens.resetPopulation(base_pop)
-        gens.dictProducer()
+        gens.fitnessProducer()
         gens.probabilityParent()
         gens.cull()
         for pairs in range(0, base_pop/2):
