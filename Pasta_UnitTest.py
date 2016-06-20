@@ -23,7 +23,6 @@ class Test(unittest.TestCase):
     def testChromList(self):
         """makes sure ingredients populate the chromosome lists
         """
-        print test_chrom.listIng()
         self.assertTrue('pesto' in test_chrom.listIng())
 
     def testDictProducer(self):

@@ -22,7 +22,7 @@ class Gene:
 
     __ingredient = ""
 
-    score_dict = {"tomato sauce": 7, "pesto": 5, "mozzarella": 5, "alfredo sauce": 10, "pasta shells": 7, "chile sauce": 5,
+    ingredient_score = {"tomato sauce": 7, "pesto": 5, "mozzarella": 5, "alfredo sauce": 10, "pasta shells": 7, "chile sauce": 5,
                   "pasta bowties": 5, "parmesan": 10, "meatballs": 8, "pasta tubes": 10, "shredded chicken": 10, "basil": 7,
                   "spinach": 10, "chives": 2, "shrimp": 2, "mushroom": 2, "macaroni": 5, "feta cheese": 2, "noodles": 7,
                   "sausage": 7, "olives": 0}
@@ -64,10 +64,10 @@ class PastaDish:
         """
 
         fit_val = 0
-        fit_val += Gene.score_dict[self.__gene_1]
-        fit_val += Gene.score_dict[self.__gene_2]
-        fit_val += Gene.score_dict[self.__gene_3]
-        fit_val += Gene.score_dict[self.__gene_4]
+        fit_val += Gene.ingredient_score[self.__gene_1]
+        fit_val += Gene.ingredient_score[self.__gene_2]
+        fit_val += Gene.ingredient_score[self.__gene_3]
+        fit_val += Gene.ingredient_score[self.__gene_4]
         self.fitvalue = fit_val
 
 class ChromPopulation:
@@ -129,6 +129,11 @@ class ChromPopulation:
         for chrom in prob_dic2:
             if prob_dic2[chrom] >= parent_chance_2:
                 parent_2 = chrom
+                if parent_2 == parent_1:
+                    if prev_parent == None:
+                        pass
+                    else:
+                        parent_2 = prev_parent
                 def_check = 1
             if def_check == 1:
                 break
@@ -154,7 +159,7 @@ class ChromPopulation:
         ingredients_2 = pasta2.listIng()
         ingredients_3 = []
         mutated_child = []
-        for num in range(0,1):
+        for num in range(0, 1):
             random_layout = random.randint(1, 6)
             if random_layout == 1:
                 ingredients_3 = [ingredients_1[0],ingredients_1[1], ingredients_2[2], ingredients_2[3]]
@@ -249,6 +254,8 @@ def workflow(generation_max, mutation_chance, base_pop):
             gens.breedEtMutate(gens.parentSelect(), mutation_chance)
         population = gens.getGeneration()
         current_best = gens.giveMostFit()
+    for chrom in population:
+        print chrom.listIng()
     print current_best.listIng()
     print current_best.fitvalue
 
