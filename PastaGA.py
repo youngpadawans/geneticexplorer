@@ -1,6 +1,6 @@
 
 __author__ = "Paul Comeau"
-__credits__ = ["Paul Comeau"]
+__credits__ = ["Paul Comeau", "Kaixin Cui"]
 __maintainer__ = "Paul Comeau"
 __email__ = "comeaupaul98@gmail.com"
 __status__ = "Development"
@@ -12,7 +12,7 @@ from sys import argv
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
 
-poss_ingredients = ["tomato sauce", "pesto", "mozzarella", "alfredo sauce", "pasta shells", "chile sauce", "pasta bowties",
+POSS_INGREDIENTS = ["tomato sauce", "pesto", "mozzarella", "alfredo sauce", "pasta shells", "chile sauce", "pasta bowties",
                     "parmesan", "meatballs", "pasta tubes", "shredded chicken", "basil", "spinach", "chives", "shrimp",
                     "mushroom", "macaroni", "feta cheese", "noodles", "sausage", "olives"]
 
@@ -44,7 +44,7 @@ class PastaDish:
     __gene_4 = ""
     fit_value = 0
 
-    def __init__ (self, gene_1, gene_2, gene_3, gene_4):
+    def __init__(self, gene_1, gene_2, gene_3, gene_4):
         """creates object from 4 genes
         """
 
@@ -171,7 +171,7 @@ class ChromPopulation:
         for ing in ingredients_3:
             mutate_poss = random.randint(0,100)
             if mutate_poss < mutate_chance:
-                ing = poss_ingredients[random.randint(0, len(poss_ingredients)-1)]
+                ing = POSS_INGREDIENTS[random.randint(0, len(POSS_INGREDIENTS)-1)]
             mutated_child.append(ing)
         child = PastaDish(mutated_child[0], mutated_child[1], mutated_child[2], mutated_child[3])
         self.__chrom_list.append(child)
@@ -183,10 +183,10 @@ class ChromPopulation:
         for chrom in range(0, base_pop):
             pasta_count += 1
             pasta_name = pasta_count
-            ingredient_1 = poss_ingredients[random.randint(0, len(poss_ingredients)-1)]
-            ingredient_2 = poss_ingredients[random.randint(0, len(poss_ingredients)-1)]
-            ingredient_3 = poss_ingredients[random.randint(0, len(poss_ingredients)-1)]
-            ingredient_4 = poss_ingredients[random.randint(0, len(poss_ingredients)-1)]
+            ingredient_1 = POSS_INGREDIENTS[random.randint(0, len(POSS_INGREDIENTS)-1)]
+            ingredient_2 = POSS_INGREDIENTS[random.randint(0, len(POSS_INGREDIENTS)-1)]
+            ingredient_3 = POSS_INGREDIENTS[random.randint(0, len(POSS_INGREDIENTS)-1)]
+            ingredient_4 = POSS_INGREDIENTS[random.randint(0, len(POSS_INGREDIENTS)-1)]
             pasta_name = PastaDish(ingredient_1, ingredient_2, ingredient_3, ingredient_4)
             self.__chrom_list.append(pasta_name)
         pass
@@ -206,15 +206,15 @@ def commandLine(arg_list=argv):
     """
     options_parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 
-    options_parser.add_argument('-m', help = 'percentage chance of every gene to mutate', action = "store" ,dest = "percent" , type=int, default= 2)
-    options_parser.add_argument('-b', help = 'amount of chromosomes the GA generates to as a base population', action = "store" ,dest = "population" , type=int, default=10)
-    options_parser.add_argument('-g', help = 'amount of times the GA goes through its cycle', action = "store" ,dest = "cycle" , type=int, default=10)
+    options_parser.add_argument('-m', help='percentage chance of every gene to mutate', action="store", dest="percent", type=int, default=2)
+    options_parser.add_argument('-b', help='amount of chromosomes the GA generates to as a base population', action="store", dest="population", type=int, default=10)
+    options_parser.add_argument('-g', help='amount of times the GA goes through its cycle', action="store", dest="cycle", type=int, default=10)
 
     opts, unkown = options_parser.parse_known_args(args = arg_list)
 
     return opts
 
-def main(args, args_parsed = None):
+def main(args, args_parsed=None):
     """defines variables based off of command line arguments
     """
     if args_parsed is not None:
