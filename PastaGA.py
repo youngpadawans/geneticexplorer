@@ -168,12 +168,24 @@ class ChromPopulation:
         ingredients_2 = pasta2.listIng()
         ingredients_3 = [None, None, None, None]
         mutated_child = []
+        p_count1 = 0
+        p_count2 = 0
         for num in range(0, len(ingredients_2)):
             random_layout = random.randint(0, 1)
             if random_layout == 1:
-                ingredients_3[num] = ingredients_2[num]
+                if p_count1 <= len(ingredients_1):
+                    ingredients_3[num] = ingredients_1[num]
+                    p_count1 += 1
+                else:
+                    ingredients_3[num] = ingredients_2[num]
+                    p_count2 +=1
             else:
-                ingredients_3[num] = ingredients_1[num]
+                if p_count2 <= len(ingredients_1):
+                    ingredients_3[num] = ingredients_2[num]
+                    p_count2 += 1
+                else:
+                    ingredients_3[num] = ingredients_1[num]
+                    p_count1 += 1
         for ing in ingredients_3:
             mutate_poss = random.randint(0, 100)
             if mutate_poss < mutate_chance:
