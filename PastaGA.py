@@ -46,6 +46,10 @@ class PastaDish:
 
     def __init__(self, gene_1, gene_2, gene_3, gene_4):
         """creates object from 4 genes
+        :param gene_1: ingredient one in chromosome
+        :param gene_2: ingredient two in chromosome
+        :param gene_3: ingredient three in chromosome
+        :param gene_4: ingredient four in chromosome
         """
 
         self.__gene_1 = gene_1
@@ -55,6 +59,7 @@ class PastaDish:
 
     def listIng(self):
         """gives a list of the genes
+        :returns: a list of ingredients contained in the chromosome
         """
 
         return [self.__gene_1, self.__gene_2, self.__gene_3, self.__gene_4]
@@ -79,6 +84,7 @@ class ChromPopulation:
 
     def __init__(self, chrom_list):
         """the given list defines the chomosome population
+        :param chrom_list: list of chromosomes to populate the ChromPopulation
         """
 
         self.__chroms = chrom_list
@@ -112,22 +118,23 @@ class ChromPopulation:
 
     def parentSelect(self):
         """selects parents based on probability dict
+        :returns: a pair of parent chromosomes
         """
         parent_chance_1 = random.random()
         parent_chance_2 = random.random()
-        prob_dic1 = self.__probabilities
-        prob_dic2 = self.__probabilities
+        probs1 = self.__probabilities
+        probs2 = self.__probabilities
         def_check = 0
-        for chrom in prob_dic1:
-            if prob_dic1[chrom] >= parent_chance_1:
+        for chrom in probs1:
+            if probs1[chrom] >= parent_chance_1:
                 parent_1 = chrom
                 def_check = 1
             if def_check == 1:
                 break
         def_check = 0
         prev_parent = None
-        for chrom in prob_dic2:
-            if prob_dic2[chrom] >= parent_chance_2:
+        for chrom in probs2:
+            if probs2[chrom] >= parent_chance_2:
                 parent_2 = chrom
                 if parent_2 == parent_1:
                     if prev_parent == None:
@@ -138,8 +145,8 @@ class ChromPopulation:
             if def_check == 1:
                 break
             prev_parent = chrom
-        parent_tuple = (parent_1, parent_2)
-        return parent_tuple
+        parent_pair = (parent_1, parent_2)
+        return parent_pair
 
     def fitnessProducer(self):
         """creates a dictionary containing pasta types and their fitness value
@@ -150,29 +157,23 @@ class ChromPopulation:
             self.__chrom_fit[chrom] = chrom.fitvalue
         pass
 
-    def breedEtMutate(self, couple_tuple, mutate_chance):
+    def breedEtMutate(self, parent_couple, mutate_chance):
         """mutates children after bred from two chromosomes
+        :param parent_couple: a tuple containing the two parents of the new chromosome
+        :param mutate_chance: int of percentage chance to mutate gene
         """
-        pasta1 = couple_tuple[0]
-        pasta2 = couple_tuple[1]
+        pasta1 = parent_couple[0]
+        pasta2 = parent_couple[1]
         ingredients_1 = pasta1.listIng()
         ingredients_2 = pasta2.listIng()
-        ingredients_3 = []
+        ingredients_3 = [None, None, None, None]
         mutated_child = []
-        for num in range(0, 1):
-            random_layout = random.randint(1, 6)
+        for num in range(0, len(ingredients_2)):
+            random_layout = random.randint(0, 1)
             if random_layout == 1:
-                ingredients_3 = [ingredients_1[0], ingredients_1[1], ingredients_2[2], ingredients_2[3]]
-            if random_layout == 2:
-                ingredients_3 = [ingredients_1[0], ingredients_2[1], ingredients_1[2], ingredients_2[3]]
-            if random_layout == 3:
-                ingredients_3 = [ingredients_1[0], ingredients_2[1], ingredients_2[2], ingredients_1[3]]
-            if random_layout == 4:
-                ingredients_3 = [ingredients_2[0], ingredients_2[1], ingredients_1[2], ingredients_1[3]]
-            if random_layout == 5:
-                ingredients_3 = [ingredients_2[0], ingredients_1[1], ingredients_1[2], ingredients_2[3]]
-            if random_layout == 6:
-                ingredients_3 = [ingredients_2[0], ingredients_1[1], ingredients_2[2], ingredients_1[3]]
+                ingredients_3[num] = ingredients_2[num]
+            else:
+                ingredients_3[num] = ingredients_1[num]
         for ing in ingredients_3:
             mutate_poss = random.randint(0, 100)
             if mutate_poss < mutate_chance:
@@ -183,6 +184,7 @@ class ChromPopulation:
 
     def resetPopulation(self, base_pop):
         """replaces current dict with new generated genes/use to create initial population
+        :param base_pop: number of chromosomes in the base population
         """
         pasta_count = 0
         for chrom in range(0, base_pop):
@@ -241,6 +243,9 @@ def main(args, args_parsed=None):
 
 def workflow(generation_max, mutation_chance, base_pop):
     """the main process which uses the class outlines and processes to run a genetic algorithm
+    :param generation_max: number of generations the program cycles through
+    :param mutation_chance: percentage chance to mutate each gene
+    :param base_pop: number of chromosomes in base population
     """
     population = []
     for gens in range(0, generation_max):
