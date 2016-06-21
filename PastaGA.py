@@ -122,20 +122,33 @@ class ChromPopulation:
         """
         parent_chance_1 = random.random()
         parent_chance_2 = random.random()
+        chance_list = []
+        list_probs = self.__probabilities
         probs1 = self.__probabilities
         probs2 = self.__probabilities
+        for vals in list_probs:
+            chance_list.append(probs1[vals])
+        chance_list2 = sorted(chance_list)
+        chance_list.sort()
         def_check = 0
-        for chrom in probs1:
-            if probs1[chrom] >= parent_chance_1:
-                parent_1 = chrom
+        for chrom in chance_list:
+            if chrom >= parent_chance_1:
+                for key in probs1:
+                    if probs1[key] == chrom:
+                        parent_1 = key
+                        break
                 def_check = 1
             if def_check == 1:
                 break
         def_check = 0
         prev_parent = None
-        for chrom in probs2:
-            if probs2[chrom] >= parent_chance_2:
-                parent_2 = chrom
+        for chrom in chance_list2:
+            if chrom >= parent_chance_2:
+                for key in probs2:
+                    if probs2[key] == chrom:
+                        parent_2 = key
+                        break
+                    prev_parent = key
                 if parent_2 == parent_1:
                     if prev_parent == None:
                         pass
@@ -144,7 +157,6 @@ class ChromPopulation:
                 def_check = 1
             if def_check == 1:
                 break
-            prev_parent = chrom
         parent_pair = (parent_1, parent_2)
         return parent_pair
 
