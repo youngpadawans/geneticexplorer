@@ -81,12 +81,13 @@ def extract_sequence_from_genome(chromosome, start, stop,
 
     # The sequence will be the second line in the result
     return \
-        "".join(output_fasta[1:]).rezzplace.strip()
+        "".join(output_fasta[1:]).replace("\n","").strip()
 
 def GC_Content_entgene(extracted_seq):
+    ex_seq = extracted_seq
     gc_counter = 0
     total_base = 0
-    for line in extracted_seq:
+    for line in ex_seq:
         if '>' not in line:
             for base in line:
                 if base != '\n':
@@ -103,9 +104,10 @@ def GC_Content_entgene(extracted_seq):
     return GC_percent
 
 def Lower_case_count_entgene(extraced_seq):
+    ex_seq = extraced_seq
     lower_count = 0
     total = 0
-    for line in extraced_seq:
+    for line in ex_seq:
         for base in line:
             total += 1
             if base.islower():
