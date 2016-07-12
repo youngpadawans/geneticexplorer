@@ -2,7 +2,11 @@ __author__ = 'theep_000'
 
 import os
 import tempfile
+import sys
 
+sys.path.insert(0, '/var/www/code/archer_core/app/')
+
+import bedtools
 testbed = open('testbed', 'r')
 
 class Gene:
@@ -11,35 +15,50 @@ class Gene:
     LowerCasePercent = 0
     NucleotideTrackLength = 0
     eighteenmer_count = 0
+    exonlength = 0
+    intronlength = 0
+    totallength = 0
+    percent_intronic = 0
+    percent_exonic = 0
 
-    def __init__(self, GCpercent, LowerCasePercent, NucleotideTracklength, EighteenMer_Count):
+    def __init__(self, GCpercent, LowerCasePercent, NucleotideTracklength,
+                 EighteenMer_Count, ExonLength, IntronLength, TotalLength, PercentIntronic, PercentExonic):
         self.GC_percent = GCpercent
         self.LowerCasePercent = LowerCasePercent
         self.NucleotideTrackLength = NucleotideTracklength
         self.eighteenmer_count = EighteenMer_Count
+        self.exonlength = ExonLength
+        self.intronlength = IntronLength
+        self.totallength = TotalLength
+        self.percent_intronic = PercentIntronic
+        self.percent_exonic = PercentExonic
 
-def extract_sequence_from_genome(chromosome, start, stop,
-                                 human_genome = os.environ["ARCHER_GENOME"]):
-    """Extracts a sequence from the human genome given a chromosom, start and stop
+    def get_GCperc(self):
+        return self.GC_percent
 
-    :param str chromosome: Chromsome to extract from
-    :param int start: Bed coordinate start of the sequence
-    :parm int stop: Bed coordinate stop of the sequence
-    """
+    def get_Lower(self):
+        return self.LowerCasePercent
 
-    # Create a dummy bed line to use fastaFromBed of bedtools
-    bed_lines = ["\t".join([chromosome, str(start), str(stop), "Name", "0", "+"])]
+    def get_TrackLength(self):
+        return self.NucleotideTrackLength
 
-    temp_output_fasta = tempfile.NamedTemporaryFile()
-    result = extract_fasta_using_bed(bed_lines, human_genome, temp_output_fasta.name)
+    def get_eighteen(self):
+        return self.eighteenmer_count
 
-    # Grab the resulting output file
-    output_file = result['output_file']
-    output_fasta = output_file.readlines()
+    def get_exleng(self):
+        return self.exonlength
 
-    # The sequence will be the second line in the result
-    return \
-        "".join(output_fasta[1:]).replace.strip()
+    def get_intleng(self):
+        return self.intronlength
+
+    def get_totalleng(self):
+        return self.totallength
+
+    def get_intperc(self):
+        return self.percent_intronic
+
+    def get_exonperc(self):
+        return self.percent_exonic
 
 def GC_Content_entgene(extracted_seq):
     gc_counter = 0
@@ -76,9 +95,7 @@ def bed_analyzer(bed):
     for line in bed:
         gene_num += 1
         bed_data = line.split()
-        single_gene = extract_sequence_from_genome(bed_data[0], int(bed_data[1]), int(bed_data[2]))
+        single_gene = bedtools.extract_sequence_from_genome(bed_data[0], int(bed_data[1]), int(bed_data[2]))
         single_gene_clone = single_gene
         Lower_case_count_entgene(single_gene)
         GC_Content_entgene(single_gene_clone)
-
-bed_analyzer(testbed)

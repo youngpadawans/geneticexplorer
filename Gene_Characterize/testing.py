@@ -37,5 +37,30 @@ def Lower_case_count_entgene(extraced_seq):
     return percent_lower
 
 print GC_Content_entgene(o)
+o.close()
 o = open('fastqtest', 'r')
 print Lower_case_count_entgene(o)
+o.close()
+
+def extract_sequence_from_genome(chromosome, start, stop,
+                                 human_genome = os.environ["ARCHER_GENOME"]):
+    """Extracts a sequence from the human genome given a chromosom, start and stop
+
+    :param str chromosome: Chromsome to extract from
+    :param int start: Bed coordinate start of the sequence
+    :parm int stop: Bed coordinate stop of the sequence
+    """
+
+    # Create a dummy bed line to use fastaFromBed of bedtools
+    bed_lines = ["\t".join([chromosome, str(start), str(stop), "Name", "0", "+"])]
+
+    temp_output_fasta = tempfile.NamedTemporaryFile()
+    result = extract_fasta_using_bed(bed_lines, human_genome, temp_output_fasta.name)
+
+    # Grab the resulting output file
+    output_file = result['output_file']
+    output_fasta = output_file.readlines()
+
+    # The sequence will be the second line in the result
+    return \
+        "".join(output_fasta[1:]).rezzplace.strip()
