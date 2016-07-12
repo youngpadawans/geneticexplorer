@@ -60,6 +60,29 @@ class Gene:
     def get_exonperc(self):
         return self.percent_exonic
 
+def extract_sequence_from_genome(chromosome, start, stop,
+                                 human_genome = os.environ["ARCHER_GENOME"]):
+    """Extracts a sequence from the human genome given a chromosom, start and stop
+
+    :param str chromosome: Chromsome to extract from
+    :param int start: Bed coordinate start of the sequence
+    :parm int stop: Bed coordinate stop of the sequence
+    """
+
+    # Create a dummy bed line to use fastaFromBed of bedtools
+    bed_lines = ["\t".join([chromosome, str(start), str(stop), "Name", "0", "+"])]
+
+    temp_output_fasta = tempfile.NamedTemporaryFile()
+    result = bedtools.extract_fasta_using_bed(bed_lines, human_genome, temp_output_fasta.name)
+
+    # Grab the resulting output file
+    output_file = result['output_file']
+    output_fasta = output_file.readlines()
+
+    # The sequence will be the second line in the result
+    return \
+        "".join(output_fasta[1:]).rezzplace.strip()
+
 def GC_Content_entgene(extracted_seq):
     gc_counter = 0
     total_base = 0
@@ -95,7 +118,7 @@ def bed_analyzer(bed):
     for line in bed:
         gene_num += 1
         bed_data = line.split()
-        single_gene = bedtools.extract_sequence_from_genome(bed_data[0], int(bed_data[1]), int(bed_data[2]))
+        single_gene = extract_sequence_from_genome(bed_data[0], int(bed_data[1]), int(bed_data[2]))
         single_gene_clone = single_gene
         Lower_case_count_entgene(single_gene)
         GC_Content_entgene(single_gene_clone)
