@@ -5,6 +5,19 @@ import tempfile
 
 testbed = open('testbed', 'r')
 
+class Gene:
+
+    GC_percent = 0
+    LowerCasePercent = 0
+    NucleotideTrackLength = 0
+    eighteenmer_count = 0
+
+    def __init__(self, GCpercent, LowerCasePercent, NucleotideTracklength, EighteenMer_Count):
+        self.GC_percent = GCpercent
+        self.LowerCasePercent = LowerCasePercent
+        self.NucleotideTrackLength = NucleotideTracklength
+        self.eighteenmer_count = EighteenMer_Count
+
 def extract_sequence_from_genome(chromosome, start, stop,
                                  human_genome = os.environ["ARCHER_GENOME"]):
     """Extracts a sequence from the human genome given a chromosom, start and stop
