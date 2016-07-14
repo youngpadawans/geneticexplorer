@@ -12,20 +12,24 @@ from sys import argv
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
 
-POSS_INGREDIENTS = ["tomato sauce", "pesto", "mozzarella", "alfredo sauce", "pasta shells", "chile sauce", "pasta bowties",
+POSS_INGREDIENTS = ["tomato sauce", "pesto", "mozzarella",
+                    "alfredo sauce", "pasta shells", "chile sauce", "pasta bowties",
                     "parmesan", "meatballs", "pasta tubes", "shredded chicken", "basil", "spinach", "chives", "shrimp",
                     "mushroom", "macaroni", "feta cheese", "noodles", "sausage", "olives"]
+
 
 class Gene:
     """formatting for the object of a single ingredient
     """
 
     __ingredient = ""
-
-    ingredient_score = {"tomato sauce": 7, "pesto": 5, "mozzarella": 5, "alfredo sauce": 10, "pasta shells": 7, "chile sauce": 5,
-                  "pasta bowties": 5, "parmesan": 10, "meatballs": 8, "pasta tubes": 10, "shredded chicken": 10, "basil": 7,
-                  "spinach": 10, "chives": 2, "shrimp": 2, "mushroom": 2, "macaroni": 5, "feta cheese": 2, "noodles": 7,
-                  "sausage": 7, "olives": 0}
+    ingredient_score = {"tomato sauce": 7, "pesto": 5,
+                        "mozzarella": 5, "alfredo sauce": 10, "pasta shells": 7, "chile sauce": 5,
+                        "pasta bowties": 5, "parmesan": 10, "meatballs": 8,
+                        "pasta tubes": 10, "shredded chicken": 10, "basil": 7,
+                        "spinach": 10, "chives": 2, "shrimp": 2,
+                        "mushroom": 2, "macaroni": 5, "feta cheese": 2, "noodles": 7,
+                        "sausage": 7, "olives": 0}
 
     def __init__(self, ingredient):
         """creates object from single ingredient
