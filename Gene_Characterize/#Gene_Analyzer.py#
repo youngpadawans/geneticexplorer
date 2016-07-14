@@ -86,7 +86,6 @@ def extract_sequence_from_genome(chromosome, start, stop,
     output_file = result['output_file']
     output_fasta = [x.strip() for x in output_file.readlines()]
 
-    print output_fasta
     # The sequence will be the second line in the result
     return \
         "".join(output_fasta[1:]).replace("\n", "").strip()
@@ -111,17 +110,6 @@ def GC_Content_entgene(extracted_seq):
     GC_percent = float(gc_counter) / float(total_base)
     return GC_percent
 
-
-def TotalLength_entgene(extracted_seq):
-
-    ex_seq = extracted_seq
-    total_count = 0
-    if '>' not in ex_seq:
-        for base in ex_seq:
-            total_count += 1
-    return total_count
-
-
 def Lower_case_count_entgene(extraced_seq):
 
     ex_seq = extraced_seq
@@ -135,25 +123,18 @@ def Lower_case_count_entgene(extraced_seq):
     percent_lower = float(lower_count) / float(total)
     return percent_lower
 
-
 def bed_analyzer(bed):
 
-    gene_list = []
     gene_num = 0
     for line in bed:
         gene_num += 1
-        gene_name = gene_num
         bed_data = line.split()
         single_gene = extract_sequence_from_genome(bed_data[0], int(bed_data[1]), int(bed_data[2]))
         single_gene_clone = single_gene
         gene_lower = Lower_case_count_entgene(single_gene)
         gene_gc = GC_Content_entgene(single_gene_clone)
-        totalleng = TotalLength_entgene(single_gene)
-        gene_name = Gene(gene_gc, gene_lower, 0, 0, 0, 0, totalleng, 0, 0)
-        gene_list.append(gene_num)
-        print gene_name.get_GCperc
-        print gene_name.get_Lower
-        print gene_name.get_totalleng
+        print gene_lower
+        print gene_gc
 
 
 bed_analyzer(testbed)
