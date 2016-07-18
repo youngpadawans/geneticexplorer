@@ -15,7 +15,8 @@ testbed = open('testbed', 'r')
 
 
 class Gene:
-
+    """format for gene object that contains collected data
+    """
     GC_percent = 0
     LowerCasePercent = 0
     NucleotideTrackLength = 0
@@ -93,6 +94,8 @@ def extract_sequence_from_genome(chromosome, start, stop,
 
 
 def GC_Content_entgene(extracted_seq):
+    """determines percentage of bases which are G or C in the entire gene
+    """
     ex_seq = extracted_seq
     gc_counter = 0
     total_base = 0
@@ -113,7 +116,8 @@ def GC_Content_entgene(extracted_seq):
 
 
 def TotalLength_entgene(extracted_seq):
-
+    """gives the amount of base pairs in the gene
+    """
     ex_seq = extracted_seq
     total_count = 0
     if '>' not in ex_seq:
@@ -123,7 +127,8 @@ def TotalLength_entgene(extracted_seq):
 
 
 def Lower_case_count_entgene(extraced_seq):
-
+    """gives amount of base pairs which are lower case in the gene
+    """
     ex_seq = extraced_seq
     lower_count = 0
     total = 0
@@ -137,7 +142,8 @@ def Lower_case_count_entgene(extraced_seq):
 
 
 def bed_analyzer(bed):
-
+    """the main process of Gene_Characterize
+    """
     gene_list = []
     gene_num = 0
     for line in bed:
@@ -151,9 +157,9 @@ def bed_analyzer(bed):
         totalleng = TotalLength_entgene(single_gene)
         gene_name = Gene(gene_gc, gene_lower, 0, 0, 0, 0, totalleng, 0, 0)
         gene_list.append(gene_num)
-        print gene_name.get_GCperc
-        print gene_name.get_Lower
-        print gene_name.get_totalleng
+        logger.info(gene_name.get_GCperc)
+        print gene_name.get_Lower()
+        print gene_name.get_totalleng()
 
 
 bed_analyzer(testbed)
