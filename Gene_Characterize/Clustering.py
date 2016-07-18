@@ -4,6 +4,9 @@ from Gene_Analyzer import Gene
 
 min_clusters = 3
 sim_dict = {}
+simple_sim_dict = {}
+
+#I may have to do some major rethinking of how I want to process the gene data in order to cluster it, my current plan may get out of hand.
 
 def gene_produce(gene_list):
     for gene in gene_list:
@@ -22,10 +25,10 @@ def Agglomerative_cluster(clusters):
             for avg_gene2 in clusters_compair:
                 if sim_dict[avg_gene2](0) != avg_gene:
                     compairison_suite(avg_gene, avg_gene2)
-                    # create a dict with simularity scores and the 2 genes being contained within the data
         # cluster genes based off of sim_dict
-        for comp_genes in sim_dict:
-
+        SimpleSimilar(sim_dict)
+        for clust in simple_sim_dict:
+            pass
         # average the values of the genes in the clusters and save values as gene objects for use in next cycle
 
     pass
@@ -40,6 +43,16 @@ def compairison_suite(gene1, gene2):
     total_lensim = total_length(gene1, gene2)
     lowersim = lower_length(gene1, gene2)
     sim_dict[gene1] = (gene2, GCsim, tracksim, eighteensim, exon_lensim, intron_lensim, total_lensim, lowersim)
+
+
+def SimpleSimilar(sim_dict):
+    combined_perc = 0
+    for item in sim_dict:
+        for perc in sim_dict[item]:
+            if not sim_dict[item](0):
+                combined_perc += sim_dict[item]
+        simple_sim_dict[item] = (sim_dict[item](0), combined_perc)
+    pass
 
 
 def GCcontent_percentsimilar(genes1, genes2):
