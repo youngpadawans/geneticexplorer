@@ -26,6 +26,19 @@ class Gene:
     totallength = 0
     percent_intronic = 0
     percent_exonic = 0
+    ex_seq = extract_sequence_from_genome
+    base_a_list = []
+    base_c_list = []
+    base_g_list = []
+    base_t_list = []
+    base_a_counter = 0
+    base_c_counter = 0
+    base_g_counter = 0
+    base_t_counter = 0
+    base_a_track = 0
+    base_c_track = 0
+    base_g_track = 0
+    base_t_track = 0
 
     def __
     init__(self, GCpercent, LowerCasePercent, NucleotideTracklength,
@@ -46,8 +59,71 @@ class Gene:
     def get_Lower(self):
         return self.LowerCasePercent
 
-    def get_TrackLength(self):
+    def get_TrackLength_average(self):
+        for base in ex_seq:
+            if base == 'a':
+                self.base_a_counter += 1
+            if base == 'A':
+                self.base_a_counter += 1
+            if base == 'c':
+                self.base_c_counter += 1
+            if base == 'C':
+                self.base_c_counter += 1
+            if base == 'g':
+                self.base_g_counter += 1
+            if base == 'G':
+                self.base_g_counter += 1
+            if base == 't':
+                self.base_t_counter += 1
+            if base == 'T':
+                self.base_t_counter += 1
+            self.base_a_list.append(self.base_a_counter)
+            self.base_c_list.append(self.base_c_counter)
+            self.base_g_list.append(self.base_g_counter)
+            self.base_t_list.append(self.base_t_counter)
+            total_base_list = self.base_a_list + self.base_c_list + self.base_g_list + self.base_t_list
+        self.NucleotideTrackLength = sum(total_base_list) * 1.0 / len(total_base_list)
         return self.NucleotideTrackLength
+
+    def get_TrackLength_a(self):
+        for base in ex_seq:
+            if base == 'a':
+                self.base_a_counter += 1
+            if base == 'A':
+                self.base_a_counter += 1
+            self.base_a_list.append(self.base_a_counter)
+            self.base_a_track = sum(self.base_a_list) * 1.0 / len(self.base_a_list)
+        return self.base_a_track
+
+    def get_TrackLength_c(self):
+        for base in ex_seq:
+            if base == 'c':
+                self.base_c_counter += 1
+            if base == 'C':
+                self.base_c_counter += 1
+            self.base_c_list.append(self.base_c_counter)
+            self.base_c_track = sum(self.base_c_list) * 1.0 / len(self.base_c_list)
+        return self. base_c_track
+
+    def get_TrackLength_g(self):
+        for base in ex_seq:
+            if base == 'g':
+                self.base_g_counter += 1
+            if base == 'G':
+                self.base_g_counter += 1
+            self.base_g_list.append(self.base_g_counter)
+            self.base_g_track = sum(self.base_g_list) * 1.0 / len(self.base_g_list)
+        return self. base_g_track
+
+    def get_TrackLength_t(self):
+        for base in ex_seq:
+            if base == 't':
+                self.base_t_counter += 1
+            if base == 'T':
+                self.base_t_counter += 1
+            self.base_t_list.append(self.base_t_counter)
+            self.base_t_track = sum(self.base_t_list) * 1.0 / len(self.base_t_list)
+        return self. base_t_track
 
     def get_eighteen(self):
         k = 18
