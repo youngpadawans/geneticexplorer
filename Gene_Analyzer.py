@@ -20,15 +20,16 @@ class Gene:
     GC_percent = 0
     LowerCasePercent = 0
     NucleotideTrackLength = 0
-    eighteenmer_count = 0
+    eighteenmer_count = {}
     exonlength = 0
     intronlength = 0
     totallength = 0
     percent_intronic = 0
     percent_exonic = 0
 
-    def __init__(self, GCpercent, LowerCasePercent, NucleotideTracklength,
-                 EighteenMer_Count, ExonLength, IntronLength, TotalLength, PercentIntronic, PercentExonic):
+    def __
+    init__(self, GCpercent, LowerCasePercent, NucleotideTracklength,
+           EighteenMer_Count, ExonLength, IntronLength, TotalLength, PercentIntronic, PercentExonic):
         self.GC_percent = GCpercent
         self.LowerCasePercent = LowerCasePercent
         self.NucleotideTrackLength = NucleotideTracklength
@@ -49,7 +50,15 @@ class Gene:
         return self.NucleotideTrackLength
 
     def get_eighteen(self):
-        return self.eighteenmer_count
+        k = 18
+        for i in range(len(seq) - k + 1):
+            EighteenMer_Count = seq[i:i + k]
+            if EighteenMer_Count.haskey(EighteenMer_Count):
+                EighteenMer_Count[EighteenMer_Count] += 1
+            else:
+                EighteenMer_Count[EighteenMer_Count] = 1
+            for EighteenMer_Count, count in EighteenMer_Count.items():
+                return self.eighteenmer_count
 
     def get_exleng(self):
         return self.exonlength
