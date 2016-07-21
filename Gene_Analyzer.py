@@ -39,6 +39,14 @@ class Gene:
     base_c_track = 0
     base_g_track = 0
     base_t_track = 0
+    stndard_deviation_tracklength = 0
+    exon_track = 0
+    intron_track = 0
+    exon_list = []
+    intron_list = []
+    average_exon = 0
+    standard_deviation_exon = 0
+
 
     def __
     init__(self, GCpercent, LowerCasePercent, NucleotideTracklength,
@@ -83,7 +91,15 @@ class Gene:
             self.base_t_list.append(self.base_t_counter)
             total_base_list = self.base_a_list + self.base_c_list + self.base_g_list + self.base_t_list
         self.NucleotideTrackLength = sum(total_base_list) * 1.0 / len(total_base_list)
-        return self.NucleotideTrackLength
+        variance_tracklength = map(lambda x: (x - self.NucleotideTrackLength) ** 2, total_base_list)
+        self.standard_deviation_tracklength = math.sqrt(self.NucleotideTrackLength(variance_tracklength))
+        return self.NucleotideTrackLength and self.standard_deviation_tracklength
+
+    def get_TrackLength_exon(self):
+        return self.exon_track
+
+    def get_TrackLength_intron(self):
+        return self.intron_track
 
     def get_TrackLength_a(self):
         for base in ex_seq:
@@ -137,19 +153,47 @@ class Gene:
                 return self.eighteenmer_count
 
     def get_exleng(self):
+        exon_count = 0
+        for character in exon:
+            if character:
+                exon_count += 1
+                self.exon_list.append(exon_count)
+        self.exonlength = sum(int(exon_count) for exon_count in exon_list)
         return self.exonlength
 
     def get_intleng(self):
+        intron_count = 0
+        for character in intron:
+            if character:
+                intron_count += 1
+                self.intron_list.append(intron_count)
+        self.intronlength = sum(int(intron_count) for intron_count in intron_list)
+        return self.intronlength
+
         return self.intronlength
 
     def get_totalleng(self):
-        return self.totallength
+        length_count = 0
+        for character in ex_seq:
+            if character:
+                length_count += 1
+        self.exonlength = sum(int(exon_count) for exon_count in exon_list)
+        self.percent_exonic = ((self.exonlength) / (length_count)) * 100
+        self.intronlength = sum(int(intron_count) for intron_count in intron_list)
+        self.percent_intronic = ((self.intronlength) / (length_count)) * 100
+        return self.length_count, self.percent_exonic, self.percent_intronic
 
-    def get_intperc(self):
-        return self.percent_intronic
+    def standarddev_exon(self):
+        self.average_exon = sum(exon_list) * 1.0 / len(exon_list)
+        variance_exon = map(lambda x: (x - self.average_exon) ** 2, exon_list)
+        self.standard_deviation_exon = math.sqrt(self.average_exon(variance_exon))
+        return self.average_exon and self.standard_deviation_exon
 
-    def get_exonperc(self):
-        return self.percent_exonic
+    def standarddev_intron(self):
+        self.average_intron = sum(intron_list) * 1.0 / len(intron_list)
+        variance_intron = map(lambda x: (x - self.average_intron) ** 2, intron_list)
+        self.standard_deviation_intron = math.sqrt(self.average_intron(variance_intron))
+        return self.average_intron and self.standard_deviation_intron
 
 
 def extract_sequence_from_genome(chromosome, start, stop,
