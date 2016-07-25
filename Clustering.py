@@ -36,13 +36,32 @@ def Agglomerative_cluster(clusters):
 
 def compairison_suite(gene1, gene2):
     GCsim = GCcontent_percentsimilar(gene1, gene2)
+    lowersim = lower_length(gene1, gene2)
+    total_lensim = total_length(gene1, gene2)
     tracksim = TrackLength_percenetsimilar(gene1, gene2)
+    stdevtracksim = StandardDeviation_percenetsimilar(gene1, gene2)
+    exontracklensim = Exontracklength_percenetsimilar(gene1, gene2)
+    stdevexontracklensim = StandardDeviationExontrack_percenetsimilar(gene1, gene2)
+    introntracklensim = Introntracklength_percenetsimilar(gene1, gene2)
+    stdevintrontracklensim = StandardDeviationIntrontrack_percenetsimilar(gene1, gene2)
+    baseA_avgsim = BaseAtrack_percenetsimilar(gene1, gene2)
+    baseC_avgsim = BaseCtrack_percenetsimilar(gene1, gene2)
+    baseG_avgsim = BaseGtrack_percenetsimilar(gene1, gene2)
+    baseT_avgsim = BaseTtrack_percenetsimilar(gene1, gene2)
     eighteensim = eighteenmer_percentsimilar(gene1, gene2)
     exon_lensim = avgexon_length(gene1, gene2)
     intron_lensim = avgintron_length(gene1, gene2)
-    total_lensim = total_length(gene1, gene2)
-    lowersim = lower_length(gene1, gene2)
-    sim_dict[gene1] = (gene2, GCsim, tracksim, eighteensim, exon_lensim, intron_lensim, total_lensim, lowersim)
+    percentintronicsim = Percentintronic_percentsimilar(gene1, gene2)
+    percentexronicsim = Percentexonic_percentsimilar(gene1, gene2)
+    stdevexonsim = StandardDeviationExon_percenetsimilar(gene1, gene2)
+    avexonsim = AverageExon_percenetsimilar(gene1, gene2)
+    stdevintronsim = StandardDeviationIntron_percenetsimilar(gene1, gene2)
+    avintronsim = AverageIntron_percenetsimilar(gene1, gene2)
+    sim_dict[gene1] = (gene2, GCsim, tracksim, stdevtracksim, exontracklensim, stdevexontracklensim,
+                       introntracklensim, stdevintrontracklensim, baseA_avgsim, baseC_avgsim, baseG_avgsim,
+                       baseT_avgsim, eighteensim, exon_lensim, intron_lensim, total_lensim, lowersim,
+                       percentintronicsim, percentexronicsim, stdevexonsim, avexonsim,
+                       stdevintronsim, avintronsim)
 
 
 def SimpleSimilar(sim_dict):
@@ -65,7 +84,71 @@ def GCcontent_percentsimilar(genes1, genes2):
     return sim_score
 
 
+def lower_length(genes1, genes2):
+    lower1 = genes1.get_Lower()
+    lower2 = genes2.get_Lower()
+    if lower1 >= lower2:
+        sim_score = lower1 - lower2
+    if lower2 > lower1:
+        sim_score = lower2 - lower1
+    return sim_score
+
+
+def total_length(genes1, genes2):
+    len1 = genes1.get_totalleng()
+    len2 = genes2.get_totalleng()
+    if len1 >= len2:
+        sim_score = len1 - len2
+    if len2 > len1:
+        sim_score = len2 - len1
+    return sim_score
+
+
 def TrackLength_percenetsimilar(genes1, genes2):
+
+    pass
+
+
+def StandardDeviation_percenetsimilar(gene1, gene2):
+
+    pass
+
+
+def Exontracklength_percenetsimilar(gene1, gene2):
+    pass
+
+
+def StandardDeviationExontrack_percenetsimilar(gene1, gene2):
+
+    pass
+
+
+def Introntracklength_percenetsimilar(gene1, gene2):
+
+    pass
+
+
+def StandardDeviationIntrontrack_percenetsimilar(gene1, gene2):
+
+    pass
+
+
+def BaseAtrack_percenetsimilar(gene1, gene2):
+
+    pass
+
+
+def BaseCtrack_percenetsimilar(gene1, gene2):
+
+    pass
+
+
+def BaseGtrack_percenetsimilar(gene1, gene2):
+
+    pass
+
+
+def BaseTtrack_percenetsimilar(gene1, gene2):
 
     pass
 
@@ -85,26 +168,34 @@ def avgintron_length(genes1, genes2):
     pass
 
 
-def total_length(genes1, genes2):
+def Percentintronic_percentsimilar(gene1, gene2):
 
-    len1 = genes1.get_totalleng()
-    len2 = genes2.get_totalleng()
-    if len1 >= len2:
-        sim_score = len1 - len2
-    if len2 > len1:
-        sim_score = len2 - len1
-    return sim_score
+    pass
 
 
-def lower_length(genes1, genes2):
+def Percentexonic_percentsimilar(gene1, gene2):
 
-    lower1 = genes1.get_Lower()
-    lower2 = genes2.get_Lower()
-    if lower1 >= lower2:
-        sim_score = lower1 - lower2
-    if lower2 > lower1:
-        sim_score = lower2 - lower1
-    return sim_score
+    pass
+
+
+def StandardDeviationExon_percenetsimilar(gene1, gene2):
+
+    pass
+
+
+def StandardDeviationIntron_percenetsimilar(gene1, gene2):
+
+    pass
+
+
+def AverageExon_percenetsimilar(gene1, gene2):
+
+    pass
+
+
+def AverageIntron_percenetsimilar(gene1, gene2):
+
+    pass
 
 # gene_produce(gene_list) this must be run first
 # Agglomerative_cluster using this gene list to create clusters
