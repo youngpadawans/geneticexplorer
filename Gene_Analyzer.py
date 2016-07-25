@@ -46,6 +46,10 @@ class Gene:
     intron_list = []
     average_exon = 0
     standard_deviation_exon = 0
+    ExonTrackLength = 0
+    exonstandard_deviation_tracklength = 0
+    IntronTrackLength = 0
+    intronstandard_deviation_tracklength = 0
 
 
     def __
@@ -96,10 +100,60 @@ class Gene:
         return self.NucleotideTrackLength and self.standard_deviation_tracklength
 
     def get_TrackLength_exon(self):
-        return self.exon_track
+        for base in exon:
+            if base == 'a':
+                self.base_a_counter += 1
+            if base == 'A':
+                self.base_a_counter += 1
+            if base == 'c':
+                self.base_c_counter += 1
+            if base == 'C':
+                self.base_c_counter += 1
+            if base == 'g':
+                self.base_g_counter += 1
+            if base == 'G':
+                self.base_g_counter += 1
+            if base == 't':
+                self.base_t_counter += 1
+            if base == 'T':
+                self.base_t_counter += 1
+            self.base_a_list.append(self.base_a_counter)
+            self.base_c_list.append(self.base_c_counter)
+            self.base_g_list.append(self.base_g_counter)
+            self.base_t_list.append(self.base_t_counter)
+            exon_base_list = self.base_a_list + self.base_c_list + self.base_g_list + self.base_t_list
+        self.ExonTrackLength = sum(exon_base_list) * 1.0 / len(exon_base_list)
+        exonvariance_tracklength = map(lambda x: (x - self.ExonTrackLength) ** 2, exon_base_list)
+        self.exonstandard_deviation_tracklength = math.sqrt(self.ExonTrackLength(exonvariance_tracklength))
+        return self.ExonTrackLength and self.exonstandard_deviation_tracklength
 
     def get_TrackLength_intron(self):
-        return self.intron_track
+        for base in intron:
+            if base == 'a':
+                self.base_a_counter += 1
+            if base == 'A':
+                self.base_a_counter += 1
+            if base == 'c':
+                self.base_c_counter += 1
+            if base == 'C':
+                self.base_c_counter += 1
+            if base == 'g':
+                self.base_g_counter += 1
+            if base == 'G':
+                self.base_g_counter += 1
+            if base == 't':
+                self.base_t_counter += 1
+            if base == 'T':
+                self.base_t_counter += 1
+            self.base_a_list.append(self.base_a_counter)
+            self.base_c_list.append(self.base_c_counter)
+            self.base_g_list.append(self.base_g_counter)
+            self.base_t_list.append(self.base_t_counter)
+            intron_base_list = self.base_a_list + self.base_c_list + self.base_g_list + self.base_t_list
+        self.IntronTrackLength = sum(intron_base_list) * 1.0 / len(intron_base_list)
+        intronvariance_tracklength = map(lambda x: (x - self.IntronTrackLength) ** 2, intron_base_list)
+        self.intronstandard_deviation_tracklength = math.sqrt(self.IntronTrackLength(intronvariance_tracklength))
+        return self.IntronTrackLength and self.intronstandard_deviation_tracklength
 
     def get_TrackLength_a(self):
         for base in ex_seq:
