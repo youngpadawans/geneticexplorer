@@ -46,11 +46,12 @@ class Gene:
     intron_list = []
     average_exon = 0
     standard_deviation_exon = 0
+    average_intron = 0
+    standard_deviation_intron = 0
     ExonTrackLength = 0
     exonstandard_deviation_tracklength = 0
     IntronTrackLength = 0
     intronstandard_deviation_tracklength = 0
-
 
     def __
     init__(self, GCpercent, LowerCasePercent, NucleotideTracklength,
@@ -224,8 +225,6 @@ class Gene:
         self.intronlength = sum(int(intron_count) for intron_count in intron_list)
         return self.intronlength
 
-        return self.intronlength
-
     def get_totalleng(self):
         length_count = 0
         for character in ex_seq:
@@ -235,7 +234,7 @@ class Gene:
         self.percent_exonic = ((self.exonlength) / (length_count)) * 100
         self.intronlength = sum(int(intron_count) for intron_count in intron_list)
         self.percent_intronic = ((self.intronlength) / (length_count)) * 100
-        return self.length_count, self.percent_exonic, self.percent_intronic
+        return self.percent_exonic, self.percent_intronic
 
     def standarddev_exon(self):
         self.average_exon = sum(exon_list) * 1.0 / len(exon_list)
