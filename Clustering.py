@@ -6,7 +6,8 @@ min_clusters = 3
 sim_dict = {}
 simple_sim_dict = {}
 
-#I may have to do some major rethinking of how I want to process the gene data in order to cluster it, my current plan may get out of hand.
+"""I may have to do some major rethinking of how I want to
+process the gene data in order to cluster it, my current plan may get out of hand."""
 
 
 def gene_produce(gene_list):
@@ -50,10 +51,10 @@ def compairison_suite(gene1, gene2):
     baseG_avgsim = BaseGtrack_percenetsimilar(gene1, gene2)
     baseT_avgsim = BaseTtrack_percenetsimilar(gene1, gene2)
     eighteensim = eighteenmer_percentsimilar(gene1, gene2)
-    exon_lensim = avgexon_length(gene1, gene2)
-    intron_lensim = avgintron_length(gene1, gene2)
+    exon_lensim = exon_length(gene1, gene2)
+    intron_lensim = intron_length(gene1, gene2)
     percentintronicsim = Percentintronic_percentsimilar(gene1, gene2)
-    percentexronicsim = Percentexonic_percentsimilar(gene1, gene2)
+    percentexonicsim = Percentexonic_percentsimilar(gene1, gene2)
     stdevexonsim = StandardDeviationExon_percenetsimilar(gene1, gene2)
     avexonsim = AverageExon_percenetsimilar(gene1, gene2)
     stdevintronsim = StandardDeviationIntron_percenetsimilar(gene1, gene2)
@@ -61,7 +62,7 @@ def compairison_suite(gene1, gene2):
     sim_dict[gene1] = (gene2, GCsim, tracksim, stdevtracksim, exontracklensim, stdevexontracklensim,
                        introntracklensim, stdevintrontracklensim, baseA_avgsim, baseC_avgsim, baseG_avgsim,
                        baseT_avgsim, eighteensim, exon_lensim, intron_lensim, total_lensim, lowersim,
-                       percentintronicsim, percentexronicsim, stdevexonsim, avexonsim,
+                       percentintronicsim, percentexonicsim, stdevexonsim, avexonsim,
                        stdevintronsim, avintronsim)
 
 
@@ -215,23 +216,23 @@ def eighteenmer_percentsimilar(genes1, genes2):
     return sim_score
 
 
-def avgexon_length(genes1, genes2):
-    avgexonlen1 = genes1.get_avgexonperc()
-    avgexonlen2 = genes2.get_avgexonperc()
-    if avgexonlen1 >= avgexonlen2:
-        sim_score = avgexonlen1 - avgexonlen2
-    if avgexonlen2 > avgexonlen1:
-        sim_score = avgexonlen2 - avgexonlen1
+def exon_length(genes1, genes2):
+    exonlen1 = genes1.get_exonperc()
+    exonlen2 = genes2.get_exonperc()
+    if exonlen1 >= exonlen2:
+        sim_score = exonlen1 - exonlen2
+    if exonlen2 > exonlen1:
+        sim_score = exonlen2 - exonlen1
     return sim_score
 
 
-def avgintron_length(genes1, genes2):
-    avgintronlen1 = genes1.get_avgintronperc()
-    avgintronlen2 = genes2.get_avgintronperc()
-    if avgintronlen1 >= avgintronlen2:
-        sim_score = avgintronlen1 - avgintronlen2
-    if avgintronlen2 > avgintronlen1:
-        sim_score = avgintronlen2 - avgintronlen1
+def intron_length(genes1, genes2):
+    intronlen1 = genes1.get_intronperc()
+    intronlen2 = genes2.get_intronperc()
+    if intronlen1 >= intronlen2:
+        sim_score = intronlen1 - intronlen2
+    if intronlen2 > intronlen1:
+        sim_score = intronlen2 - intronlen1
     return sim_score
 
 
