@@ -1,0 +1,20 @@
+from matplotlib import pyplot as pypl
+from scipy.cluster.hierarchy import dendrogram, linkage
+import numpy as npy
+import Gene_Analyzer
+gene_list = []
+
+
+def listpopulator():
+
+    pass
+
+
+def clustermethod(gene_list):
+
+    data = npy.concatenate()
+    heirclust = linkage(data, "ward")
+
+    pass
+
+print npy.random.multivariate_normal([10, 0], [[3, 1], [1, 4]], size=[100, ])
