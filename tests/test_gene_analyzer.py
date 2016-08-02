@@ -5,11 +5,11 @@ from __future__ import division
 """ description
 """
 
-__author__ = "FirstName LastName"
+__author__ = "Kaixin Cui"
 __copyright__ = "Copyright 2016, ArcherDX"
-__credits__ = ["FirstName LastName"]
-__maintainer__ = "FirstName LastName"
-__email__ = "name@archerdx.com"
+__credits__ = ["Kaixin Cui"]
+__maintainer__ = "Kaixin Cui"
+__email__ = "kcui@archerdx.com"
 
 import unittest
 from geneticexplorer.gene_analyzer import Gene
@@ -29,13 +29,32 @@ class TestModuleName(unittest.TestCase):
         gene1 = Gene("AAA", 25, 23, 23, 23, 23, 23, 23, 23, 23)
         gene1.calculate_base_statistics()
         self.assertEqual(gene1.base_homo_mapping['A'], 3)
+        pass
+
+    def test_homoa_polytrack(self):
+        gene1 = Gene("AAACCCCAAAAAaaaa", 25, 23, 23, 23, 23, 23, 23, 23, 23)
+        gene1.get_TrackLength_a()
+        self.assertEqual(gene1.base_a_list, [3, 9])
+        pass
+
+    def test_homoc_polytrack(self):
+        gene1 = Gene("AAACCCCAAAAAaaaa", 25, 23, 23, 23, 23, 23, 23, 23, 23)
+        gene1.get_TrackLength_c()
+        self.assertEqual(gene1.base_c_list, [4])
+        pass
+
+    def test_tracklength_average(self):
+        gene1 = Gene("AAACCCCAAAAAaaaaGGGAAATTTTAAAAAAACCCCGGGTTT", 25, 23, 23, 23, 23, 23, 23, 23, 23)
+        gene1.get_Track_average()
+        print gene1.total_base_list
 
     def test_gene_constructor(self):
         """tests for <methodName>.
         """
         gene1 = Gene("AACAAACAAA", 25, 23, 23, 23, 23, 23, 23, 23, 23)
-        gene1.calculate_base_statistics()
+        gene1.calculate_basetrack_statistics()
         self.assertEqual(gene1.base_homo_mapping['A'], 3, "Incorrect number of poly A tracks!")
+        pass
 
     def tearDown(self):
         """Last test executed: cleans up all files initially created"""

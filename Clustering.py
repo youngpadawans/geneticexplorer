@@ -1,7 +1,10 @@
 __author__ = 'theep_000'
 
 from Gene_Analyzer import Gene
-
+try:
+    import numpy
+except ImportError:
+    print "numpy no"
 min_clusters = 3
 sim_dict = {}
 simple_sim_dict = {}

@@ -6,7 +6,6 @@ import os
 import tempfile
 import sys
 
-from collections import defaultdict
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
 logger = logging.getLogger(__file__)
@@ -19,6 +18,21 @@ class Gene:
     """format for gene object that contains collected data
     """
 
+    base_a_list = []
+    base_c_list = []
+    base_g_list = []
+    base_t_list = []
+    base_a_track = 0
+    base_c_track = 0
+    base_g_track = 0
+    base_t_track = 0
+
+    base_a_counter = 0
+    base_c_counter = 0
+    base_g_counter = 0
+    base_t_counter = 0
+
+    total_base_list = []
     GC_percent = 0
     LowerCasePercent = 0
     NucleotideTrackLength = 0
@@ -29,18 +43,6 @@ class Gene:
     percent_intronic = 0
     percent_exonic = 0
     #ex_seq = extract_sequence_from_genome
-    base_a_list = []
-    base_c_list = []
-    base_g_list = []
-    base_t_list = []
-    base_a_counter = 0
-    base_c_counter = 0
-    base_g_counter = 0
-    base_t_counter = 0
-    base_a_track = 0
-    base_c_track = 0
-    base_g_track = 0
-    base_t_track = 0
     stndard_deviation_tracklength = 0
     exon_track = 0
     intron_track = 0
@@ -57,6 +59,15 @@ class Gene:
 
     def __init__(self, sequence, GCpercent, LowerCasePercent, NucleotideTracklength,
                  EighteenMer_Count, ExonLength, IntronLength, TotalLength, PercentIntronic, PercentExonic):
+        self.base_a_list = []
+        self.base_c_list = []
+        self.base_g_list = []
+        self.base_t_list = []
+        self.base_a_track = 0
+        self.base_c_track = 0
+        self.base_g_track = 0
+        self.base_t_track = 0
+
         self.sequence = sequence
         self.GC_percent = GCpercent
         self.LowerCasePercent = LowerCasePercent
@@ -67,7 +78,6 @@ class Gene:
         self.totallength = TotalLength
         self.percent_intronic = PercentIntronic
         self.percent_exonic = PercentExonic
-        self.base_homo_mapping = defaultdict(int)
 
     def get_GCperc(self):
         return self.GC_percent
@@ -75,72 +85,73 @@ class Gene:
     def get_Lower(self):
         return self.LowerCasePercent
 
-    def calculate_basetrack_statistics(self):
-        prev_character = ""
-        track_count = 0
-        for base in (self.sequence + " "):
-            if base == 'a':
-                self.base_a_counter += 1
-            if base == 'A':
-                self.base_a_counter += 1
-            if base == 'c':
-                self.base_c_counter += 1
-            if base == 'C':
-                self.base_c_counter += 1
-            if base == 'g':
-                self.base_g_counter += 1
-            if base == 'G':
-                self.base_g_counter += 1
-            if base == 't':
-                self.base_t_counter += 1
-            if base == 'T':
-                self.base_t_counter += 1
-            if base.upper() == prev_character:
-                track_count += 1
-                track_char = base.upper
-            elif base.upper() != prev_character:
-                self.base_homo_mapping[track_char].append(track_count)
-            prev_character = base.upper()
-
-            """ def calculate_basetrack_statistics(self):
-        prev_character = ""
-        track_count = 0
-        for base in (self.sequence + " "):
-            if base == 'a':
-                self.base_a_counter += 1
-            if base == 'A':
-                self.base_a_counter += 1
-            if base == 'c':
-                self.base_c_counter += 1
-            if base == 'C':
-                self.base_c_counter += 1
-            if base == 'g':
-                self.base_g_counter += 1
-            if base == 'G':
-                self.base_g_counter += 1
-            if base == 't':
-                self.base_t_counter += 1
-            if base == 'T':
-                self.base_t_counter += 1
-            if base.upper() == prev_character:
-                track_count += 1
-                track_char = base.upper()
-            elif track_count > 0:
-                track_count = 0
-                self.base_homo_mapping[track_char] += 1
-            prev_character = base.upper()"""
-
     def get_TrackLength_a(self):
-        for base in ex_seq:
-            if base == 'a':
-                self.base_a_counter += 1
-            if base == 'A':
-                self.base_a_counter += 1
-            self.base_a_list.append(self.base_a_counter)
-            self.base_a_track = sum(self.base_a_list) * 1.0 / len(self.base_a_list)
-        return self.base_a_track
+        prev_character = "A" or "a"
+        track_count = 0
+        for base in (self.sequence + " "):
+            if base.upper() == prev_character:
+                track_count += 1
+            elif base.upper() != prev_character:
+                self.base_a_list.append(track_count)
+                track_count = 0
+            while 0 in self.base_a_list:
+                    self.base_a_list.remove(0)
+        self.base_a_track = sum(self.base_a_list) / float(len(self.base_a_list))
+        prev_character = base.upper()
+        return self.base_a_list
 
-    def get_TrackLength_average(self):
+    def get_TrackLength_g(self):
+        prev_character = "G" or "g"
+        track_count = 0
+        for base in (self.sequence + " "):
+            if base.upper() == prev_character:
+                track_count += 1
+            elif base.upper() != prev_character:
+                self.base_g_list.append(track_count)
+                track_count = 0
+            while 0 in self.base_g_list:
+                    self.base_g_list.remove(0)
+        self.base_g_track = sum(self.base_g_list) / float(len(self.base_g_list))
+        prev_character = base.upper()
+        return self.base_g_list
+
+    def get_TrackLength_t(self):
+        prev_character = "T" or "t"
+        track_count = 0
+        for base in (self.sequence + " "):
+            if base.upper() == prev_character:
+                track_count += 1
+            elif base.upper() != prev_character:
+                self.base_t_list.append(track_count)
+                track_count = 0
+            while 0 in self.base_t_list:
+                    self.base_t_list.remove(0)
+        self.base_t_track = sum(self.base_t_list) / float(len(self.base_t_list))
+        prev_character = base.upper()
+        return self.base_t_list
+
+    def get_TrackLength_c(self):
+        prev_character = "C" or "c"
+        track_count = 0
+        for base in (self.sequence + " "):
+            if base.upper() == prev_character:
+                track_count += 1
+            elif base.upper() != prev_character:
+                self.base_c_list.append(track_count)
+                track_count = 0
+            while 0 in self.base_c_list:
+                    self.base_c_list.remove(0)
+        self.base_c_track = sum(self.base_c_list) / float(len(self.base_c_list))
+        prev_character = base.upper()
+        return self.base_c_list
+
+    def get_Track_average(self):
+        self.total_base_list = self.base_a_list + self.base_c_list + self.base_g_list + self.base_t_list
+        """ self.NucleotideTrackLength = sum(total_base_list) / float(len(total_base_list))
+        variance_tracklength = map(lambda x: (x - self.NucleotideTrackLength) ** 2, total_base_list)
+        self.standard_deviation_tracklength = math.sqrt(self.NucleotideTrackLength(variance_tracklength))"""
+
+        """ def get_TrackLength_average(self):
         for base in ex_seq:
             if base == 'a':
                 self.base_a_counter += 1
@@ -165,7 +176,7 @@ class Gene:
             total_base_list = self.base_a_list + self.base_c_list + self.base_g_list + self.base_t_list
         self.NucleotideTrackLength = sum(total_base_list) * 1.0 / len(total_base_list)
         variance_tracklength = map(lambda x: (x - self.NucleotideTrackLength) ** 2, total_base_list)
-        self.standard_deviation_tracklength = math.sqrt(self.NucleotideTrackLength(variance_tracklength))
+        self.standard_deviation_tracklength = math.sqrt(self.NucleotideTrackLength(variance_tracklength))"""
 
     def get_TrackLength_exon(self):
         for base in exon:

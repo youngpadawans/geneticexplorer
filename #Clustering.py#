@@ -297,4 +297,4 @@ def AverageIntron_percenetsimilar(genes1, genes2):
 
 
 # gene_produce(gene_list) this must be run first
-# Agglomerative_cluster using this gene list to create cluster
+# Agglomerative_cluster using this gene list to create clusters
