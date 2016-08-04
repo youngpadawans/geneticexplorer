@@ -186,8 +186,8 @@ class Gene:
                     self.base_t_list.remove(0)
         self.total_base_list = self.base_a_list + self.base_c_list + self.base_g_list + self.base_t_list
         self.NucleotideTrackLength = sum(self.total_base_list) / (len(self.total_base_list))
-        variance_tracklength = map(lambda x: (x - self.NucleotideTrackLength) ** 2, self.total_base_list)
-        self.standard_deviation_tracklength = math.sqrt(self.NucleotideTrackLength**(variance_tracklength))
+        variance_tracklength = sum(map(lambda x: (x - self.NucleotideTrackLength) ** 2, self.total_base_list))
+        self.standard_deviation_tracklength = math.sqrt(self.NucleotideTrackLength * (variance_tracklength))
 
     def get_TrackLength_exon(self):
         for base in exon:
