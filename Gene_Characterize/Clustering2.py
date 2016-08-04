@@ -1,18 +1,21 @@
 
+import sys
+sys.path.append('/root/gene_clusters/geneticexplorer/')
+
 from scipy.cluster.hierarchy import dendrogram, linkage
 import numpy as npy
 import gene_analyzer
-gene_list = []
-var_num = 0
+#gene_list = []
+#var_num = 0
 from sys import argv
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
 
-def listpopulator():
+def listpopulator(bed_file):
     """creates list of genes for use in clustering
     """
-    #return gene_list
-    pass
+    gene_list = gene_analyzer.bed_analyzer(bed_file)
+    return gene_list
 
 
 def clustermethod(gene_list):
@@ -26,14 +29,13 @@ def clustermethod(gene_list):
         gene_vals = (gene.get_GCperc(), gene.get_Lower(), gene.get_totalleng())
         array_val = npy.fromiter(gene_vals, float)
         array_list.append(array_val)
-        #loop produces a ndarray for every gene, containing it's data, for use in concatenation then clustering
+        # loop produces a ndarray for every gene, containing it's data, for use in concatenation then clustering
     for point in array_list:
-        #loop concatenates all the data
+        # loop concatenates all the data
         current_point = point
         if past_point is False:
             past_point = True
             past_data = point
-            pass
         else:
             data = npy.concatenate(past_data, current_point)
             past_data = data
@@ -42,7 +44,8 @@ def clustermethod(gene_list):
 
 
 def workflow(bed):
-    clustermethod(listpopulator(bed))
+    clustered_array = clustermethod(listpopulator(bed))
+    return clustered_array
 
 
 def commandLine(arg_list=argv):
@@ -50,26 +53,28 @@ def commandLine(arg_list=argv):
     """
     options_parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 
-    options_parser.add_argument('-b', help='bedfile with genes to be clustered', action="store", dest='bed')
+    options_parser.add_argument('-b', type=str, help='bedfile with genes to be clustered', action="store", dest='bed')
 
-    opts, unkown = options_parser.parse_known_args(args=arg_list)
+    opts, unknown = options_parser.parse_known_args(args=arg_list)
+
+    return opts
 
 
-def main(args, args_parsed="None"):
+def main(args, args_parsed=None):
     if args_parsed is not None:
         opts = args_parsed
 
     else:
         opts = commandLine(args)
 
-    if opts.bed is True:
+    print opts.bed
+    if opts.bed is not None:
         bed_file = opts.bed
-
-    if bed_file is True:
         workflow(bed_file)
 
     else:
         print "please give a bed file"
+
 
 if __name__ == "__main__":
     main(argv)

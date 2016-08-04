@@ -97,6 +97,7 @@ class Gene:
                     self.base_a_list.remove(0)
         self.base_a_track = sum(self.base_a_list) / float(len(self.base_a_list))
         prev_character = base.upper()
+    
 
     def get_TrackLength_g(self):
         prev_character = "G" or "g"
