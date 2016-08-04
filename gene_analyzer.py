@@ -79,6 +79,13 @@ class Gene:
         self.percent_intronic = PercentIntronic
         self.percent_exonic = PercentExonic
 
+    def __str__(self):
+        return "\t".join([str(x) for x in [self.sequence, self.GC_percent,
+                                           self.LowerCasePercent, self.NucleotideTrackLength,
+                                           self.eighteenmer_count, self.exonlength,
+                                           self.intronlength, self.totallength,
+                                           self.percent_intronic, self.percent_exonic]])
+
     def get_GCperc(self):
         return self.GC_percent
 
@@ -274,7 +281,7 @@ class Gene:
         self.intronlength = sum(int(intron_count) for intron_count in intron_list)
         return self.intronlength
 
-    def get_totalleng(self):
+    def get_totalleng(self, ex_seq):
         length_count = 0
         for character in ex_seq:
             if character:
@@ -318,7 +325,7 @@ def extract_sequence_from_genome(chromosome, start, stop,
     output_file = result['output_file']
     output_fasta = [x.strip() for x in output_file.readlines()]
 
-    print output_fasta
+    #print output_fasta
     # The sequence will be the second line in the result
     return \
         "".join(output_fasta[1:]).replace("\n", "").strip()
@@ -377,7 +384,7 @@ def bed_analyzer(bed):
     """
     gene_list = []
     gene_num = 0
-    for line in bed:
+    for line in open(bed, 'r'):
         gene_num += 1
         gene_name = gene_num
         bed_data = line.split()
@@ -386,11 +393,10 @@ def bed_analyzer(bed):
         gene_lower = Lower_case_count_entgene(single_gene)
         gene_gc = GC_Content_entgene(single_gene_clone)
         totalleng = TotalLength_entgene(single_gene)
-        gene_name = Gene(gene_gc, gene_lower, 0, 0, 0, 0, totalleng, 0, 0)
+        gene_name = Gene("", gene_gc, gene_lower, 0, 0, 0, 0, totalleng, 0, 0)
         gene_list.append(gene_num)
         logger.info(gene_name.get_GCperc)
-        print gene_name.get_Lower()
-        print gene_name.get_totalleng()
+        yield gene_name
 
 
 def parseCmdlineParams(arg_list=sys.argv):
@@ -413,8 +419,9 @@ def parseCmdlineParams(arg_list=sys.argv):
 
 def main(argv):
     opts = parseCmdlineParams(argv)
-    print opts.bed
-    bed_analyzer(opts.bed)
+    gene = bed_analyzer(opts.bed)
+    for curr in gene:
+        print curr
 
 if __name__ == "__main__":
     main(sys.argv)
