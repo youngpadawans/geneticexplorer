@@ -1,15 +1,17 @@
-#!bin/bash
 
 from scipy.cluster.hierarchy import dendrogram, linkage
 import numpy as npy
-from Gene_Analyzer import Gene
+import gene_analyzer
 gene_list = []
 var_num = 0
+from sys import argv
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
 
 def listpopulator():
     """creates list of genes for use in clustering
     """
+    #return gene_list
     pass
 
 
@@ -38,8 +40,36 @@ def clustermethod(gene_list):
     heirclust = linkage(data, "ward")
     return heirclust
 
-def main(args, ar):
-    pass
+
+def workflow(bed):
+    clustermethod(listpopulator(bed))
+
+
+def commandLine(arg_list=argv):
+    """defines command line arguments
+    """
+    options_parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
+
+    options_parser.add_argument('-b', help='bedfile with genes to be clustered', action="store", dest='bed')
+
+    opts, unkown = options_parser.parse_known_args(args=arg_list)
+
+
+def main(args, args_parsed="None"):
+    if args_parsed is not None:
+        opts = args_parsed
+
+    else:
+        opts = commandLine(args)
+
+    if opts.bed is True:
+        bed_file = opts.bed
+
+    if bed_file is True:
+        workflow(bed_file)
+
+    else:
+        print "please give a bed file"
 
 if __name__ == "__main__":
     main(argv)
