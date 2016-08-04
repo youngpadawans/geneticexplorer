@@ -128,7 +128,6 @@ class Gene:
                     self.base_t_list.remove(0)
         self.base_t_track = sum(self.base_t_list) / float(len(self.base_t_list))
         prev_character = base.upper()
-        return self.base_t_list
 
     def get_TrackLength_c(self):
         prev_character = "C" or "c"
@@ -143,40 +142,52 @@ class Gene:
                     self.base_c_list.remove(0)
         self.base_c_track = sum(self.base_c_list) / float(len(self.base_c_list))
         prev_character = base.upper()
-        return self.base_c_list
 
     def get_Track_average(self):
+        prev_character = "G" or "g"
+        track_count = 0
+        for base in (self.sequence + " "):
+            if base.upper() == prev_character:
+                track_count += 1
+            elif base.upper() != prev_character:
+                self.base_g_list.append(track_count)
+                track_count = 0
+            while 0 in self.base_g_list:
+                    self.base_g_list.remove(0)
+        prevC_character = "C" or "c"
+        trackC_count = 0
+        for base in (self.sequence + " "):
+            if base.upper() == prevC_character:
+                trackC_count += 1
+            elif base.upper() != prevC_character:
+                self.base_c_list.append(trackC_count)
+                trackC_count = 0
+            while 0 in self.base_c_list:
+                    self.base_c_list.remove(0)
+        prevA_character = "A" or "a"
+        trackA_count = 0
+        for base in (self.sequence + " "):
+            if base.upper() == prevA_character:
+                trackA_count += 1
+            elif base.upper() != prevA_character:
+                self.base_a_list.append(trackA_count)
+                trackA_count = 0
+            while 0 in self.base_a_list:
+                    self.base_a_list.remove(0)
+        prevT_character = "T" or "t"
+        trackT_count = 0
+        for base in (self.sequence + " "):
+            if base.upper() == prevT_character:
+                trackT_count += 1
+            elif base.upper() != prevT_character:
+                self.base_t_list.append(trackT_count)
+                trackT_count = 0
+            while 0 in self.base_t_list:
+                    self.base_t_list.remove(0)
         self.total_base_list = self.base_a_list + self.base_c_list + self.base_g_list + self.base_t_list
-        """ self.NucleotideTrackLength = sum(total_base_list) / float(len(total_base_list))
-        variance_tracklength = map(lambda x: (x - self.NucleotideTrackLength) ** 2, total_base_list)
-        self.standard_deviation_tracklength = math.sqrt(self.NucleotideTrackLength(variance_tracklength))"""
-
-        """ def get_TrackLength_average(self):
-        for base in ex_seq:
-            if base == 'a':
-                self.base_a_counter += 1
-            if base == 'A':
-                self.base_a_counter += 1
-            if base == 'c':
-                self.base_c_counter += 1
-            if base == 'C':
-                self.base_c_counter += 1
-            if base == 'g':
-                self.base_g_counter += 1
-            if base == 'G':
-                self.base_g_counter += 1
-            if base == 't':
-                self.base_t_counter += 1
-            if base == 'T':
-                self.base_t_counter += 1
-            self.base_a_list.append(self.base_a_counter)
-            self.base_c_list.append(self.base_c_counter)
-            self.base_g_list.append(self.base_g_counter)
-            self.base_t_list.append(self.base_t_counter)
-            total_base_list = self.base_a_list + self.base_c_list + self.base_g_list + self.base_t_list
-        self.NucleotideTrackLength = sum(total_base_list) * 1.0 / len(total_base_list)
-        variance_tracklength = map(lambda x: (x - self.NucleotideTrackLength) ** 2, total_base_list)
-        self.standard_deviation_tracklength = math.sqrt(self.NucleotideTrackLength(variance_tracklength))"""
+        self.NucleotideTrackLength = sum(self.total_base_list) / (len(self.total_base_list))
+        variance_tracklength = map(lambda x: (x - self.NucleotideTrackLength) ** 2, self.total_base_list)
+        self.standard_deviation_tracklength = math.sqrt(self.NucleotideTrackLength**(variance_tracklength))
 
     def get_TrackLength_exon(self):
         for base in exon:
