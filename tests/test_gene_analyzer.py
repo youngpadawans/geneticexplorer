@@ -25,36 +25,24 @@ class TestModuleName(unittest.TestCase):
         """
         pass
 
-    def test_homo_polytrack(self):
-        gene1 = Gene("AAA", 25, 23, 23, 23, 23, 23, 23, 23, 23)
-        gene1.calculate_base_statistics()
-        self.assertEqual(gene1.base_homo_mapping['A'], 3)
-        pass
-
     def test_homoa_polytrack(self):
-        gene1 = Gene("AAACCCCAAAAAaaaa", 25, 23, 23, 23, 23, 23, 23, 23, 23)
+        gene1 = Gene("aaaCCCAAA", 25, 23, 23, 23, 23, 23, 23, 23, 23)
         gene1.get_TrackLength_a()
-        self.assertEqual(gene1.base_a_list, [3, 9])
+        self.assertEqual(gene1.base_a_list, [3, 3])
+        print gene1.base_a_track
         pass
 
     def test_homoc_polytrack(self):
-        gene1 = Gene("AAACCCCAAAAAaaaa", 25, 23, 23, 23, 23, 23, 23, 23, 23)
+        gene1 = Gene("AACCCAACCC", 25, 23, 23, 23, 23, 23, 23, 23, 23)
         gene1.get_TrackLength_c()
-        self.assertEqual(gene1.base_c_list, [4])
-        pass
+        self.assertEqual(gene1.base_c_list, [3, 3])
+        print gene1.base_c_track
 
     def test_tracklength_average(self):
-        gene1 = Gene("AAACCCCAAAAAaaaaGGGAAATTTTAAAAAAACCCCGGGTTT", 25, 23, 23, 23, 23, 23, 23, 23, 23)
+        gene1 = Gene("AATTAAGGCC", 25, 23, 23, 23, 23, 23, 23, 23, 23)
         gene1.get_Track_average()
         print gene1.total_base_list
-
-    def test_gene_constructor(self):
-        """tests for <methodName>.
-        """
-        gene1 = Gene("AACAAACAAA", 25, 23, 23, 23, 23, 23, 23, 23, 23)
-        gene1.calculate_basetrack_statistics()
-        self.assertEqual(gene1.base_homo_mapping['A'], 3, "Incorrect number of poly A tracks!")
-        pass
+        print gene1.NucleotideTrackLength
 
     def tearDown(self):
         """Last test executed: cleans up all files initially created"""
