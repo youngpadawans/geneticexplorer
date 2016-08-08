@@ -24,11 +24,13 @@ def clustermethod(gene_list):
     array_val = 0
     array_list = []
     past_point = False
+
     for gene in gene_list:
         array_val += 1
         gene_vals = (gene.get_GCperc(), gene.get_Lower())
         array_val = npy.fromiter(gene_vals, float)
         array_list.append(array_val)
+        print array_val
         # loop produces a ndarray for every gene, containing it's data, for use in concatenation then clustering
     for point in array_list:
         # loop concatenates all the data
