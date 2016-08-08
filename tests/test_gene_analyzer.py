@@ -12,10 +12,9 @@ __maintainer__ = "Kaixin Cui"
 __email__ = "kcui@archerdx.com"
 
 import unittest
-from geneticexplorer.gene_analyzer import Gene
+from gene_clusters.geneticexplorer.gene_analyzer.py import Gene
 
 
-# Replace ModuleName with actual modules you're testing.
 class TestModuleName(unittest.TestCase):
     """Tests for <ModuleName>.
     """
@@ -29,7 +28,6 @@ class TestModuleName(unittest.TestCase):
         gene1 = Gene("aaaCCCAAA", 25, 23, 23, 23, 23, 23, 23, 23, 23)
         gene1.get_TrackLength_a()
         self.assertEqual(gene1.base_a_list, [3, 3])
-        print gene1.base_a_track
         pass
 
     def test_homoc_polytrack(self):
@@ -42,7 +40,6 @@ class TestModuleName(unittest.TestCase):
         gene1 = Gene("AATTAAGGCC", 25, 23, 23, 23, 23, 23, 23, 23, 23)
         gene1.get_Track_average()
         print gene1.total_base_list
-        print gene1.NucleotideTrackLength
 
     def tearDown(self):
         """Last test executed: cleans up all files initially created"""

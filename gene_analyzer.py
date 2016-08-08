@@ -142,7 +142,7 @@ class Gene:
         prev_character = base.upper()
 
     def get_Track_average(self):
-        prev_character = "G" or "g"
+        """prev_character = "G" or "g"
         track_count = 0
         for base in (self.sequence + " "):
             if base.upper() == prev_character:
@@ -181,11 +181,11 @@ class Gene:
                 self.base_t_list.append(trackT_count)
                 trackT_count = 0
             while 0 in self.base_t_list:
-                    self.base_t_list.remove(0)
+                    self.base_t_list.remove(0)"""
         self.total_base_list = self.base_a_list + self.base_c_list + self.base_g_list + self.base_t_list
-        self.NucleotideTrackLength = sum(self.total_base_list) / (len(self.total_base_list))
+        """self.NucleotideTrackLength = sum(self.total_base_list) / (len(self.total_base_list))
         variance_tracklength = sum(map(lambda x: (x - self.NucleotideTrackLength) ** 2, self.total_base_list))
-        self.standard_deviation_tracklength = math.sqrt((variance_tracklength) / (len(self.total_base_list) - 1))
+        self.standard_deviation_tracklength = math.sqrt((variance_tracklength) / (len(self.total_base_list) - 1))"""
 
     def get_TrackLength_exon(self):
         for character in exon:
@@ -293,7 +293,7 @@ class Gene:
             for EighteenMer_Count, count in EighteenMer_Count.items():
                 return self.eighteenmer_count
 
-  """  def get_exleng(self):
+    def get_exleng(self):
         exon_count = 0
         for base in (self.sequence):
             if base == exon:
@@ -311,9 +311,9 @@ class Gene:
             if base != intron:
                 self.intron_list.append(intron_count)
                 intron_count = 0
-        self.intronlength = sum(int(intron_count) for intron_count in self.intron_list)"""
+        self.intronlength = sum(int(intron_count) for intron_count in self.intron_list)
 
-    def get_totalleng(self, ex_seq):
+    def get_totalleng(self):
         length_count = 0
         for base in (self.sequence):
             if base:
@@ -435,7 +435,8 @@ def bed_analyzer(bed):
         gene_name = Gene("", gene_gc, gene_lower, 0, 0, 0, 0, totalleng, 0, 0)
         gene_list.append(gene_name)
         logger.info(gene_name.get_GCperc)
-        return gene_list
+        print gene_list
+    return gene_list
 
 
 def parseCmdlineParams(arg_list=sys.argv):

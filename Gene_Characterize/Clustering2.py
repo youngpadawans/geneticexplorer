@@ -5,8 +5,8 @@ sys.path.append('/root/gene_clusters/geneticexplorer/')
 from scipy.cluster.hierarchy import dendrogram, linkage
 import numpy as npy
 import gene_analyzer
-#gene_list = []
-#var_num = 0
+# gene_list = []
+# var_num = 0
 from sys import argv
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
@@ -26,7 +26,7 @@ def clustermethod(gene_list):
     past_point = False
     for gene in gene_list:
         array_val += 1
-        gene_vals = (gene.get_GCperc(), gene.get_Lower(), gene.get_totalleng())
+        gene_vals = (gene.get_GCperc(), gene.get_Lower())
         array_val = npy.fromiter(gene_vals, float)
         array_list.append(array_val)
         # loop produces a ndarray for every gene, containing it's data, for use in concatenation then clustering
@@ -37,8 +37,9 @@ def clustermethod(gene_list):
             past_point = True
             past_data = point
         else:
-            data = npy.concatenate(past_data, current_point)
+            data = npy.concatenate([past_data, current_point])
             past_data = data
+    print data
     heirclust = linkage(data, "ward")
     return heirclust
 
@@ -67,7 +68,6 @@ def main(args, args_parsed=None):
     else:
         opts = commandLine(args)
 
-    print opts.bed
     if opts.bed is not None:
         bed_file = opts.bed
         workflow(bed_file)
