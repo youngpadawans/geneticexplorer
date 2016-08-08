@@ -12,7 +12,7 @@ __maintainer__ = "Kaixin Cui"
 __email__ = "kcui@archerdx.com"
 
 import unittest
-from gene_clusters.geneticexplorer.gene_analyzer.py import Gene
+from geneticexplorer.gene_analyzer import Gene
 
 
 class TestModuleName(unittest.TestCase):
@@ -25,21 +25,34 @@ class TestModuleName(unittest.TestCase):
         pass
 
     def test_homoa_polytrack(self):
-        gene1 = Gene("aaaCCCAAA", 25, 23, 23, 23, 23, 23, 23, 23, 23)
+        gene1 = Gene("AAAAACCGGGGTTTaaa", 25, 23, 23, 23, 23, 23, 23, 23, 23)
         gene1.get_TrackLength_a()
-        self.assertEqual(gene1.base_a_list, [3, 3])
-        pass
+        self.assertEqual(gene1.base_a_l, [5, 3])
+
+    def test_homog_polytrack(self):
+        gene1 = Gene("AAAAACCGGGGTTTaaa", 25, 23, 23, 23, 23, 23, 23, 23, 23)
+        gene1.get_TrackLength_g()
+        self.assertEqual(gene1.base_g_l, [4])
+
+    def test_homot_polytrack(self):
+        gene1 = Gene("AAAAACCGGGGTTTaaa", 25, 23, 23, 23, 23, 23, 23, 23, 23)
+        gene1.get_TrackLength_t()
+        self.assertEqual(gene1.base_t_l, [3])
 
     def test_homoc_polytrack(self):
-        gene1 = Gene("AACCCAACCC", 25, 23, 23, 23, 23, 23, 23, 23, 23)
+        gene1 = Gene("AAAAACCGGGGTTTaaa", 25, 23, 23, 23, 23, 23, 23, 23, 23)
         gene1.get_TrackLength_c()
-        self.assertEqual(gene1.base_c_list, [3, 3])
-        print gene1.base_c_track
+        self.assertEqual(gene1.base_c_l, [2])
 
     def test_tracklength_average(self):
-        gene1 = Gene("AATTAAGGCC", 25, 23, 23, 23, 23, 23, 23, 23, 23)
+        gene1 = Gene("AAAAACCGGGGTTTaaa", 25, 23, 23, 23, 23, 23, 23, 23, 23)
         gene1.get_Track_average()
-        print gene1.total_base_list
+        self.assertEqual(gene1.standard_deviation_tracklength, 1)
+
+    def test_eighteen(self):
+        gene1 = Gene("AAAAACCGGGGTTTaaa", 25, 23, 23, 23, 23, 23, 23, 23, 23)
+        gene1.get_eighteen()
+        print gene1.eighteenmer_count
 
     def tearDown(self):
         """Last test executed: cleans up all files initially created"""
