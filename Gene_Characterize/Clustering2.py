@@ -30,19 +30,18 @@ def clustermethod(gene_list):
         gene_vals = (gene.get_GCperc(), gene.get_Lower())
         array_val = npy.fromiter(gene_vals, float)
         array_list.append(array_val)
-        print array_val
+
         # loop produces a ndarray for every gene, containing it's data, for use in concatenation then clustering
-    for point in array_list:
+        #for point in array_list:
         # loop concatenates all the data
-        current_point = point
-        if past_point is False:
-            past_point = True
-            past_data = point
-        else:
-            data = npy.concatenate([past_data, current_point])
-            past_data = data
-    print data
-    heirclust = linkage(data, "ward")
+        #current_point = point
+        #if past_point is False:
+        #    past_point = True
+        #    past_data = point
+        #else:
+        #    data = npy.concatenate([past_data, current_point])
+        #    past_data = data
+    heirclust = linkage(array_list, "ward")
     return heirclust
 
 
