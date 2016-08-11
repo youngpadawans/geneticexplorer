@@ -5,6 +5,7 @@ import logging
 import os
 import tempfile
 import sys
+sys.path.appen('/root/hg19_exons_introns.gtf')
 import __builtin__
 
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
@@ -426,6 +427,18 @@ def extract_sequence_from_genome(chromosome, start, stop,
     return \
         "".join(output_fasta[1:]).replace("\n", "").strip()
 
+def only_exon(bed):
+    f1 = open('hg19 file', 'r')
+    f2 = open('exon', 'w')
+    f4 = open('hg19.exons_introns.gtf', 'r')
+
+    for line in f4:
+        if gene_coordinate_start in f1 <= exon_end in f4:
+            f2.write(line)
+
+    f1.close()
+    f2.close()
+    f4.close()
 
 """def GC_Content_entgene(extracted_seq):
     ex_seq = extracted_seq
@@ -467,19 +480,6 @@ def Lower_case_count_entgene(extraced_seq):
                 lower_count += 1
     percent_lower = float(lower_count) / float(total)
     return percent_lower"""
-
-def only_exon(bed):
-    f1 = open('hg19 file', 'r')
-    f2 = open('exon', 'w')
-    f4 = open('hg19 annotations', 'r')
-
-    for line in f4:
-        if gene_coordinate_start in f1 <= exon_end in f4:
-            f2.write(line)
-
-    f1.close()
-    f2.close()
-    f4.close()
 
 
 def bed_analyzer(bed):
